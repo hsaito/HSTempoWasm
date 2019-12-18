@@ -1,10 +1,10 @@
 ﻿@page "/"
 @using System.Timers
+@inject IJSRuntime JSRuntime;
 
 <h1>HSTempo</h1>
 <div class="card">
     <div class="card-body">
-
         <div class="card">
             <div class="card-body">
 
@@ -40,10 +40,8 @@
 
 <div class="card">
     <div class="card-body">
-        <button class="btn btn-primary" style="padding: 3em;" @onclick="ExecBeat">Beat</button>
-        <button class="btn btn-danger" style="padding: 3em;" @onclick="Reset">Reset</button>
-
-
+        <button class="btn btn-primary" id="beatButton" style="padding: 3em;" @onclick="ExecBeat" autofocus>Beat</button>
+        <button class="btn btn-danger" id="resetButton" style="padding: 3em;" @onclick="Reset">Reset</button>
     </div>
 </div>
 
@@ -64,12 +62,9 @@
     private DateTime lastTime;
     private double recentTimeMs;
 
-    private void KeyDownBeat(KeyboardEventArgs e)
+    protected override void OnInitialized()
     {
-        if (e.Key == "Enter" || e.Key == "Space")
-        {
-            ExecBeat();
-        }
+        JSRuntime.InvokeVoidAsync("setFocus", "beatButton");
     }
 
     private void ExecBeat()
@@ -156,14 +151,17 @@
         if (vdiTick != null)
         {
             vdiTick.Enabled = false;
+            vdiTick.Close();
         }
         if (vdiTock != null)
         {
             vdiTock.Enabled = false;
+            vdiTock.Close();
         }
-        vdiTick.Close();
-        vdiTock.Close();
+        
         vdiCheck = false;
+        
+        JSRuntime.InvokeVoidAsync("setFocus", "beatButton");
     }
 
     private void StartTimer()
@@ -186,9 +184,12 @@
 
     private void StopTimer()
     {
-        beatTimer.Enabled = false;
-        beatTimer.Stop();
-        beatTimer.Close();
+        if (beatTimer != null && beatTimer.Enabled)
+        {
+            beatTimer.Enabled = false;
+            beatTimer.Stop();
+            beatTimer.Close();
+        }
         elapsedSecond = 0;
         currentBPM = 0;
         recentTimeMs = 0;
