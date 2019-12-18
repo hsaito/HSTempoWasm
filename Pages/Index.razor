@@ -22,8 +22,8 @@
 
                 <div class="container">
                     <div class="row">
-                        <button class="btn btn-outline-secondary" @onclick="AdjustUp">Adjust Up</button>
-                        <button class="btn btn-outline-secondary" @onclick="AdjustDown">Adjust Down</button>
+                        <button class="btn btn-outline-secondary" style="padding: 2em;" @onclick="AdjustUp">Adjust Up</button>
+                        <button class="btn btn-outline-secondary" style="padding: 2em;" @onclick="AdjustDown">Adjust Down</button>
                     </div>
                 </div>
             </div>
@@ -34,14 +34,14 @@
 
 <div class="card">
     <div class="card-body">
-        <p>Current: @recentTimeMs ms</p>
+        <p>Last: @recentTimeMs ms</p>
     </div>
 </div>
 
 <div class="card">
     <div class="card-body">
-        <button class="btn btn-primary" @onclick="ExecBeat">Beat</button>
-        <button class="btn btn-danger" @onclick="Reset">Reset</button>
+        <button class="btn btn-primary" style="padding: 3em;" @onclick="ExecBeat">Beat</button>
+        <button class="btn btn-danger" style="padding: 3em;" @onclick="Reset">Reset</button>
 
 
     </div>
@@ -62,7 +62,6 @@
     private DateTime currentTime;
     private DateTime startTime;
     private DateTime lastTime;
-    private TimeSpan recentTime;
     private double recentTimeMs;
 
     private void KeyDownBeat(KeyboardEventArgs e)
