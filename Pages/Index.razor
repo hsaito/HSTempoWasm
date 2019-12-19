@@ -40,7 +40,7 @@
 
 <div class="card">
     <div class="card-body">
-        <button class="btn btn-primary" id="beatButton" style="padding: 3em;" @onclick="ExecBeat" autofocus>Beat</button>
+        <button class="btn btn-primary" id="beatButton" style="padding: 3em;" @onclick="ExecBeat" autofocus="true">Beat</button>
         <button class="btn btn-danger" id="resetButton" style="padding: 3em;" @onclick="Reset">Reset</button>
     </div>
 </div>
@@ -62,9 +62,12 @@
     private DateTime lastTime;
     private double recentTimeMs;
 
-    protected override void OnInitialized()
+    protected override void OnAfterRender(bool firstRender)
     {
-        JSRuntime.InvokeVoidAsync("setFocus", "beatButton");
+        if (firstRender)
+        {
+            JSRuntime.InvokeVoidAsync("setFocus", "beatButton");
+        }
     }
 
     private void ExecBeat()
