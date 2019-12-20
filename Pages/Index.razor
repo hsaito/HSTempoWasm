@@ -2,46 +2,75 @@
 @using System.Timers
 @inject IJSRuntime JSRuntime;
 
-<h1>HSTempo</h1>
-<div class="card">
-    <div class="card-body">
-        <div class="card">
-            <div class="card-body">
+<div @onkeypress="@GetKeyPress">
+    <div class="card">
+        <div class="card-body">
+            <div class="card">
+                <div class="card-body">
 
-                <div style="padding-left: 2em">
-                    <p><input type="checkbox" @bind="@vdiCheck" class="form-check-input" id="vbi"> VBI</p>
+                    <div style="padding-left: 2em">
+                        <p><input type="checkbox" @bind="@vdiCheck" class="form-check-input" id="vbi"> VBI</p>
+                    </div>
+                    <div class="container" style="font-size: small;">
+                        <div class="row">
+                            <div class="col-sm">
+                                Elapsed Time: @elapsedSecond
+                            </div>
+                            <div class="col-sm">
+                                Beat Count: @currentCount
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <p>Elapsed Time: @elapsedSecond</p>
-                <p>Beat Count: @currentCount</p>
             </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <p>BPM: @currentBPM</p>
+
+                    <div class="container">
+                        <div class="row">
+                            <button class="btn btn-outline-secondary" @onclick="AdjustUp">Adjust Up</button>
+                            <button class="btn btn-outline-secondary" @onclick="AdjustDown">Adjust Down</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
+    </div>
 
-        <div class="card">
-            <div class="card-body">
-                <p>BPM: @currentBPM</p>
-
-                <div class="container">
-                    <div class="row">
-                        <button class="btn btn-outline-secondary" @onclick="AdjustUp">Adjust Up</button>
-                        <button class="btn btn-outline-secondary" @onclick="AdjustDown">Adjust Down</button>
+    <div class="card">
+        <div class="card-body">
+            <div class="container" style="font-size: small;">
+                <div class="row">
+                    <div class="col-sm">
+                        Last: @recentTimeMs ms
+                    </div>
+                    <div class="col-sm">
+                        Average: @averageMS ms
+                    </div>
+                    <div class="col-sm">
+                        BPM Interval: @bpmInterval ms
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
-</div>
 
-<div class="card">
-    <div class="card-body">
-        <p>Last: @recentTimeMs ms</p>
-    </div>
-</div>
-
-<div class="card">
-    <div class="card-body">
-        <button class="btn btn-primary" id="beatButton" style="padding: 3em;" @onclick="ExecBeat" autofocus="true">Beat</button>
-        <button class="btn btn-danger" id="resetButton" style="padding: 3em;" @onclick="Reset">Reset</button>
+    <div class="card">
+        <div class="card-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm">
+                        <button class="btn btn-primary" id="beatButton" style="padding-top: 1.5em; padding-bottom: 1.5em; width: 100%;" @onclick="ExecBeat" autofocus="true">Beat</button>
+                    </div>
+                    <div class="col-sm">
+                        <button class="btn btn-danger" id="resetButton" style="padding-top: 1.5em; padding-bottom: 1.5em; width: 100%;" @onclick="Reset">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -49,6 +78,9 @@
     private int currentCount = 0;
     private double currentBPM = 0;
     private int elapsedSecond = 0;
+
+    int averageMS = 0;
+    int bpmInterval = 0;
 
     private Timer beatTimer;
 
@@ -70,11 +102,46 @@
         }
     }
 
+    void GetKeyPress(KeyboardEventArgs e)
+    {
+        switch (e.Key)
+        {
+            case "r":
+            case "R":
+            {
+                Reset();
+                break;
+            }
+
+            case "b":
+            case "B":
+            {
+                JSRuntime.InvokeVoidAsync("setFocus", "beatButton");
+                break;
+            }
+
+            case "u":
+            case "U":
+            {
+                AdjustUp();
+                break;
+            }
+
+            case "d":
+            case "D":
+            {
+                AdjustDown();
+                break;
+            }
+        }
+    }
+
     private void ExecBeat()
     {
         currentTime = DateTime.Now;
         var accumulatedMs = currentTime - startTime;
         currentBPM = Math.Round((currentCount / accumulatedMs.TotalMilliseconds) * 60000);
+        Console.WriteLine($"{currentCount} / {accumulatedMs.TotalMilliseconds}");
         currentCount++;
 
         if (beatTimer == null || beatTimer.Enabled != true)
@@ -89,6 +156,8 @@
             vdiTick.Interval = 60000 / currentBPM;
             vdiTock.Interval = 60000 / currentBPM / 3;
             vdiTick.Enabled = true;
+            bpmInterval = CalculateBPMtoMS();
+            averageMS = (int) (accumulatedMs.TotalMilliseconds / currentCount);
         }
         else
         {
@@ -102,6 +171,11 @@
         lastTime = currentTime;
     }
 
+    private short CalculateBPMtoMS()
+    {
+        return currentBPM <= 0 ? (short) 0 : Convert.ToInt16(Math.Round(60000 / currentBPM));
+    }
+
     private void AdjustUp()
     {
         if (beatTimer != null && beatTimer.Enabled && currentBPM > 0)
@@ -112,6 +186,7 @@
             vdiTick.Interval = 60000 / currentBPM;
             vdiTock.Interval = 60000 / currentBPM / 3;
             vdiTick.Enabled = true;
+            bpmInterval = CalculateBPMtoMS();
         }
     }
 
@@ -125,6 +200,7 @@
             vdiTick.Interval = 60000 / currentBPM;
             vdiTock.Interval = 60000 / currentBPM / 3;
             vdiTick.Enabled = true;
+            bpmInterval = CalculateBPMtoMS();
         }
     }
 
@@ -161,9 +237,9 @@
             vdiTock.Enabled = false;
             vdiTock.Close();
         }
-        
+
         vdiCheck = false;
-        
+
         JSRuntime.InvokeVoidAsync("setFocus", "beatButton");
     }
 
