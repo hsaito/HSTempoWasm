@@ -63,7 +63,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm">
-                        <button class="btn btn-primary" id="beatButton" style="padding-top: 1.5em; padding-bottom: 1.5em; width: 100%;" @onclick="ExecBeat" autofocus="true">Beat</button>
+                        <button class="btn btn-primary" id="beatButton" style="padding-top: 1.5em; padding-bottom: 1.5em; width: 100%;"  @onclick="ExecBeat">Beat</button>
                     </div>
                     <div class="col-sm">
                         <button class="btn btn-danger" id="resetButton" style="padding-top: 1.5em; padding-bottom: 1.5em; width: 100%;" @onclick="Reset">Reset</button>
@@ -225,8 +225,8 @@
 
     private void Reset()
     {
-        currentCount = 0;
         StopTimer();
+        
         if (vdiTick != null)
         {
             vdiTick.Enabled = false;
@@ -240,6 +240,10 @@
 
         vdiCheck = false;
 
+        currentCount = 0;
+        averageMS = 0;
+        bpmInterval = 0;
+        
         JSRuntime.InvokeVoidAsync("setFocus", "beatButton");
     }
 
