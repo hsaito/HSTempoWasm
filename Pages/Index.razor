@@ -19,6 +19,9 @@
                             <div class="col-sm">
                                 Beat Count: @currentCount
                             </div>
+                            <div class="col-sm">
+                                Average (10/15/20): @bpmAverage10 / @bpmAverage15 / @bpmAverage20
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -28,15 +31,40 @@
                 <div class="card-body">
                     <p>BPM: @currentBPM</p>
 
-                    <div class="container">
+                    <div class="container" style="font-size: small;">
                         <div class="row">
                             <button class="btn btn-outline-secondary" @onclick="AdjustUp">Adjust Up</button>
                             <button class="btn btn-outline-secondary" @onclick="AdjustDown">Adjust Down</button>
                         </div>
+
                     </div>
                 </div>
             </div>
 
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            Stability
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" style="width: @stability%" aria-valuenow="@stability" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm">
+                        <button class="btn btn-primary" id="beatButton" style="padding-top: 1.5em; padding-bottom: 1.5em; width: 100%;" ontouch="ExecBeat" @onclick="ExecBeat">Beat</button>
+                    </div>
+                    <div class="col-sm">
+                        <button class="btn btn-danger" id="resetButton" style="padding-top: 1.5em; padding-bottom: 1.5em; width: 100%;" ontouch="Reset" @onclick="Reset">Reset</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -57,27 +85,24 @@
             </div>
         </div>
     </div>
-
-    <div class="card">
-        <div class="card-body">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm">
-                        <button class="btn btn-primary" id="beatButton" style="padding-top: 1.5em; padding-bottom: 1.5em; width: 100%;" ontouch="ExecBeat" @onclick="ExecBeat">Beat</button>
-                    </div>
-                    <div class="col-sm">
-                        <button class="btn btn-danger" id="resetButton" style="padding-top: 1.5em; padding-bottom: 1.5em; width: 100%;" ontouch="Reset" @onclick="Reset">Reset</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 @code {
     private int currentCount = 0;
     private double currentBPM = 0;
     private int elapsedSecond = 0;
+
+    double[] bpmValue10 = new double[10];
+    double[] bpmValue15 = new double[15];
+    double[] bpmValue20 = new double[20];
+
+    string bpmAverage10 = "X";
+    string bpmAverage15 = "X";
+    string bpmAverage20 = "X";
+
+    int bpmPoint10 = 0;
+    int bpmPoint15 = 0;
+    int bpmPoint20 = 0;
 
     int averageMS = 0;
     int bpmInterval = 0;
@@ -93,6 +118,8 @@
     private DateTime startTime;
     private DateTime lastTime;
     private double recentTimeMs;
+
+    double stability = 0;
 
     protected override void OnAfterRender(bool firstRender)
     {
@@ -141,7 +168,6 @@
         currentTime = DateTime.Now;
         var accumulatedMs = currentTime - startTime;
         currentBPM = Math.Round((currentCount / accumulatedMs.TotalMilliseconds) * 60000);
-        Console.WriteLine($"{currentCount} / {accumulatedMs.TotalMilliseconds}");
         currentCount++;
 
         if (beatTimer == null || beatTimer.Enabled != true)
@@ -158,6 +184,42 @@
             vdiTick.Enabled = true;
             bpmInterval = CalculateBPMtoMS();
             averageMS = (int) (accumulatedMs.TotalMilliseconds / currentCount);
+
+            bpmValue10[bpmPoint10] = currentBPM;
+            bpmPoint10++;
+            if (bpmPoint10 > 9)
+                bpmPoint10 = 0;
+
+            bpmValue15[bpmPoint15] = currentBPM;
+            bpmPoint15++;
+            if (bpmPoint15 > 14)
+                bpmPoint15 = 0;
+
+            bpmValue20[bpmPoint20] = currentBPM;
+            bpmPoint20++;
+            if (bpmPoint20 > 19)
+                bpmPoint20 = 0;
+
+            double bpmAverageValue10 = 0, bpmAverageValue15 = 0, bpmAverageValue20 = 0;
+
+            if (currentCount > 10)
+            {
+                bpmAverageValue10 = Math.Round(bpmValue10.Sum() / 10);
+                bpmAverage10 = bpmAverageValue10.ToString();
+            }
+
+            if (currentCount > 15)
+            {
+                bpmAverageValue15 = Math.Round(bpmValue15.Sum() / 15);
+                bpmAverage15 = bpmAverageValue15.ToString();
+            }
+
+            if (currentCount > 20)
+            {
+                bpmAverageValue20 = Math.Round(bpmValue20.Sum() / 20);
+                bpmAverage20 = bpmAverageValue20.ToString();
+                stability = (20 - Math.Abs(currentBPM - (bpmAverageValue10 + bpmAverageValue15 + bpmAverageValue20) / 3)) / 20 * 100;
+            }
         }
         else
         {
@@ -226,7 +288,7 @@
     private void Reset()
     {
         StopTimer();
-        
+
         if (vdiTick != null)
         {
             vdiTick.Enabled = false;
@@ -243,8 +305,13 @@
         currentCount = 0;
         averageMS = 0;
         bpmInterval = 0;
-        
+
         JSRuntime.InvokeVoidAsync("setFocus", "beatButton");
+
+        stability = 0;
+        bpmAverage10 = "X";
+        bpmAverage15 = "X";
+        bpmAverage20 = "X";
     }
 
     private void StartTimer()
