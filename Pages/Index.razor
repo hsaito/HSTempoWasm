@@ -39,6 +39,12 @@
                                 <button class="btn btn-outline-secondary" @onclick="Rebase">Rebase</button>
                             </div>
                             <div class="col-sm">
+                                <audio
+                                    preload="auto"
+                                    src="/sounds/beat.mp3">
+                                    Your browser does not support the
+                                    <code>audio</code> element.
+                                </audio>
                                 <p><input type="checkbox" @bind="@audibleBeat" class="form-check-input" id="audibleBeat"> Audible Beat</p>
                             </div>
                         </div>
@@ -259,7 +265,7 @@
             vdiTick.Enabled = true;
         }
     }
-    
+
     private void AdjustUp()
     {
         if (beatTimer != null && beatTimer.Enabled && currentBPM > 0)
@@ -298,6 +304,11 @@
     private TimeSpan UpdateRecentTime()
     {
         return currentTime - lastTime;
+    }
+
+    private void TestBeat()
+    {
+        JSRuntime.InvokeVoidAsync("playBeat");
     }
 
     private void ProcessTick(object sender, ElapsedEventArgs elapsedEventArgs)
