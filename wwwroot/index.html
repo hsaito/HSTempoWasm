@@ -2,12 +2,12 @@
 <html>
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width"/>
     <title>HSTempoWasm</title>
-    <base href="/" />
-    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
-    <link href="css/site.css" rel="stylesheet" />
+    <base href="/"/>
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet"/>
+    <link href="css/site.css" rel="stylesheet"/>
     <link rel="manifest" href="/manifest.json">
     <!-- Start Single Page Apps for GitHub Pages -->
     <script type="text/javascript">
@@ -22,10 +22,10 @@
         // When the single page app is loaded further down in this file,
         // the correct url will be waiting in the browser's history for
         // the single page app to route accordingly.
-        (function(l) {
+        (function (l) {
             if (l.search) {
                 var q = {};
-                l.search.slice(1).split('&').forEach(function(v) {
+                l.search.slice(1).split('&').forEach(function (v) {
                     var a = v.split('=');
                     q[a[0]] = a.slice(1).join('=').replace(/~and~/g, '&');
                 });
@@ -46,18 +46,26 @@
     window.setFocus = (id) => {
         var element = document.getElementById(id);
         element.focus();
-        setTimeout(function () { element.focus(); }, 1);
+        setTimeout(function () {
+            element.focus();
+        }, 1);
     };
 </script>
+<script>
+    window.playBeat = () => {
+        var audio = new Audio('/sounds/beat.mp3');
+        audio.play();
+    }
+</script>
 
-    <app>Loading...</app>
+<app>Loading...</app>
 
-    <div id="blazor-error-ui">
-        An unhandled error has occurred.
-        <a href="" class="reload">Reload</a>
-        <a class="dismiss">🗙</a>
-    </div>
-    <script src="_framework/blazor.webassembly.js"></script>
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>
+<script src="_framework/blazor.webassembly.js"></script>
 </body>
 
 </html>

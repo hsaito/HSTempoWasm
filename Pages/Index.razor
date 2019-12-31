@@ -33,14 +33,19 @@
 
                     <div class="container" style="font-size: small;">
                         <div class="row">
-                            <button class="btn btn-outline-secondary" @onclick="AdjustUp">Adjust Up</button>
-                            <button class="btn btn-outline-secondary" @onclick="AdjustDown">Adjust Down</button>
+                            <div class="col-sm">
+                                <button class="btn btn-outline-secondary" @onclick="AdjustUp">Adjust Up</button>
+                                <button class="btn btn-outline-secondary" @onclick="AdjustDown">Adjust Down</button>
+                                <button class="btn btn-outline-secondary" @onclick="Rebase">Rebase</button>
+                            </div>
+                            <div class="col-sm">
+                                <p><input type="checkbox" @bind="@audibleBeat" class="form-check-input" id="audibleBeat"> Audible Beat</p>
+                            </div>
                         </div>
 
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -119,6 +124,7 @@
     private Timer vdiTock;
 
     bool vdiCheck;
+    bool audibleBeat;
 
     private DateTime currentTime;
     private DateTime startTime;
@@ -244,6 +250,16 @@
         return currentBPM <= 0 ? (short) 0 : Convert.ToInt16(Math.Round(60000 / currentBPM));
     }
 
+    private void Rebase()
+    {
+        if (beatTimer != null && beatTimer.Enabled && currentBPM > 0)
+        {
+            vdiTick.Enabled = false;
+            vdiTock.Enabled = false;
+            vdiTick.Enabled = true;
+        }
+    }
+    
     private void AdjustUp()
     {
         if (beatTimer != null && beatTimer.Enabled && currentBPM > 0)
@@ -286,6 +302,10 @@
 
     private void ProcessTick(object sender, ElapsedEventArgs elapsedEventArgs)
     {
+        if (audibleBeat)
+        {
+            JSRuntime.InvokeVoidAsync("playBeat");
+        }
         vdiCheck = true;
         this.StateHasChanged();
         vdiTock.Enabled = true;
