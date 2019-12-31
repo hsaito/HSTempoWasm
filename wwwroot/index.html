@@ -52,8 +52,12 @@
     };
 </script>
 <script>
+    var audio;
+    
     window.playBeat = () => {
-        var audio = new Audio('/sounds/beat.mp3');
+        if(audio == null) {
+            audio = new Audio('/sounds/beat.mp3');
+        }
         audio.play();
     }
 </script>
