@@ -1,7 +1,35 @@
-﻿using Microsoft.AspNetCore.Blazor.Hosting;
+﻿using System.Timers;
+using Microsoft.AspNetCore.Blazor.Hosting;
 
 namespace HSTempoWasm
 {
+    internal class Timers
+    {
+        internal static void StopAll()
+        {    
+            if (beatTimer != null && beatTimer.Enabled)
+            {
+                beatTimer.Enabled = false;
+                beatTimer.Stop();
+                beatTimer.Close();
+            }
+            
+            if (vdiTick != null)
+            {
+                vdiTick.Enabled = false;
+                vdiTick.Close();
+            }
+            if (vdiTock != null)
+            {
+                vdiTock.Enabled = false;
+                vdiTock.Close();
+            }
+        }
+        
+        internal static Timer beatTimer;
+        internal static Timer vdiTick;
+        internal static Timer vdiTock;
+    }
     public class Program
     {
         public static void Main(string[] args)

@@ -60,3 +60,11 @@
         </p>
     </div>
 </div>
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        Timers.StopAll();
+    }
+}

@@ -124,11 +124,6 @@
     int averageMS = 0;
     int bpmInterval = 0;
 
-    private Timer beatTimer;
-
-    private Timer vdiTick;
-    private Timer vdiTock;
-
     bool vdiCheck;
     bool audibleBeat;
 
@@ -188,7 +183,7 @@
         currentBPM = Math.Round((currentCount / accumulatedMs.TotalMilliseconds) * 60000);
         currentCount++;
 
-        if (beatTimer == null || beatTimer.Enabled != true)
+        if (Timers.beatTimer == null || Timers.beatTimer.Enabled != true)
         {
             StartTimer();
         }
@@ -196,10 +191,10 @@
         if (currentCount > 1)
         {
             recentTimeMs = UpdateRecentTime().TotalMilliseconds;
-            vdiTock.Enabled = false;
-            vdiTick.Interval = 60000 / currentBPM;
-            vdiTock.Interval = 60000 / currentBPM / 3;
-            vdiTick.Enabled = true;
+            Timers.vdiTock.Enabled = false;
+            Timers.vdiTick.Interval = 60000 / currentBPM;
+            Timers.vdiTock.Interval = 60000 / currentBPM / 3;
+            Timers.vdiTick.Enabled = true;
             bpmInterval = CalculateBPMtoMS();
             averageMS = (int) (accumulatedMs.TotalMilliseconds / currentCount);
 
@@ -241,11 +236,11 @@
         }
         else
         {
-            vdiTick = new Timer();
-            vdiTock = new Timer();
-            vdiTick.Elapsed += ProcessTick;
-            vdiTick.AutoReset = true;
-            vdiTock.Elapsed += ProcessTock;
+            Timers.vdiTick = new Timer();
+            Timers.vdiTock = new Timer();
+            Timers.vdiTick.Elapsed += ProcessTick;
+            Timers.vdiTick.AutoReset = true;
+            Timers.vdiTock.Elapsed += ProcessTock;
         }
 
         lastTime = currentTime;
@@ -258,38 +253,38 @@
 
     private void Rebase()
     {
-        if (beatTimer != null && beatTimer.Enabled && currentBPM > 0)
+        if (Timers.beatTimer != null && Timers.beatTimer.Enabled && currentBPM > 0)
         {
-            vdiTick.Enabled = false;
-            vdiTock.Enabled = false;
-            vdiTick.Enabled = true;
+            Timers.vdiTick.Enabled = false;
+            Timers.vdiTock.Enabled = false;
+            Timers.vdiTick.Enabled = true;
         }
     }
 
     private void AdjustUp()
     {
-        if (beatTimer != null && beatTimer.Enabled && currentBPM > 0)
+        if (Timers.beatTimer != null && Timers.beatTimer.Enabled && currentBPM > 0)
         {
-            vdiTick.Enabled = false;
-            vdiTock.Enabled = false;
+            Timers.vdiTick.Enabled = false;
+            Timers.vdiTock.Enabled = false;
             currentBPM++;
-            vdiTick.Interval = 60000 / currentBPM;
-            vdiTock.Interval = 60000 / currentBPM / 3;
-            vdiTick.Enabled = true;
+            Timers.vdiTick.Interval = 60000 / currentBPM;
+            Timers.vdiTock.Interval = 60000 / currentBPM / 3;
+            Timers.vdiTick.Enabled = true;
             bpmInterval = CalculateBPMtoMS();
         }
     }
 
     private void AdjustDown()
     {
-        if (beatTimer != null && beatTimer.Enabled && currentBPM > 0)
+        if (Timers.beatTimer != null && Timers.beatTimer.Enabled && currentBPM > 0)
         {
-            vdiTick.Enabled = false;
-            vdiTock.Enabled = false;
+            Timers.vdiTick.Enabled = false;
+            Timers.vdiTock.Enabled = false;
             currentBPM--;
-            vdiTick.Interval = 60000 / currentBPM;
-            vdiTock.Interval = 60000 / currentBPM / 3;
-            vdiTick.Enabled = true;
+            Timers.vdiTick.Interval = 60000 / currentBPM;
+            Timers.vdiTock.Interval = 60000 / currentBPM / 3;
+            Timers.vdiTick.Enabled = true;
             bpmInterval = CalculateBPMtoMS();
         }
     }
@@ -297,7 +292,7 @@
     private void ProcessTock(object sender, ElapsedEventArgs e)
     {
         vdiCheck = false;
-        vdiTock.Enabled = false;
+        Timers.vdiTock.Enabled = false;
         this.StateHasChanged();
     }
 
@@ -319,22 +314,22 @@
         }
         vdiCheck = true;
         this.StateHasChanged();
-        vdiTock.Enabled = true;
+        Timers.vdiTock.Enabled = true;
     }
 
     private void Reset()
     {
         StopTimer();
 
-        if (vdiTick != null)
+        if (Timers.vdiTick != null)
         {
-            vdiTick.Enabled = false;
-            vdiTick.Close();
+            Timers.vdiTick.Enabled = false;
+            Timers.vdiTick.Close();
         }
-        if (vdiTock != null)
+        if (Timers.vdiTock != null)
         {
-            vdiTock.Enabled = false;
-            vdiTock.Close();
+            Timers.vdiTock.Enabled = false;
+            Timers.vdiTock.Close();
         }
 
         vdiCheck = false;
@@ -354,13 +349,13 @@
     private void StartTimer()
     {
         startTime = DateTime.Now;
-        beatTimer = new Timer
+        Timers.beatTimer = new Timer
         {
             Interval = 1000,
             AutoReset = true
         };
-        beatTimer.Elapsed += ProcessSecond;
-        beatTimer.Enabled = true;
+        Timers.beatTimer.Elapsed += ProcessSecond;
+        Timers.beatTimer.Enabled = true;
     }
 
     private void ProcessSecond(object sender, ElapsedEventArgs elapsedEventArgs)
@@ -371,11 +366,11 @@
 
     private void StopTimer()
     {
-        if (beatTimer != null && beatTimer.Enabled)
+        if (Timers.beatTimer != null && Timers.beatTimer.Enabled)
         {
-            beatTimer.Enabled = false;
-            beatTimer.Stop();
-            beatTimer.Close();
+            Timers.beatTimer.Enabled = false;
+            Timers.beatTimer.Stop();
+            Timers.beatTimer.Close();
         }
         elapsedSecond = 0;
         currentBPM = 0;
