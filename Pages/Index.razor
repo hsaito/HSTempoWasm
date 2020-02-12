@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using System.Timers
+@using Newtonsoft.Json
 @inject IJSRuntime JSRuntime;
 
 <div @onkeypress="@GetKeyPress">
@@ -49,6 +50,7 @@
                             </div>
                             <div class="col-sm">
                                 <button class="btn btn-outline-secondary" onclick="playBeat()">Test Beat</button>
+                                <button class="btn btn-outline-secondary" @onclick="DownloadJson">Download Metric</button>
                             </div>
                         </div>
 
@@ -179,6 +181,23 @@
         }
     }
 
+
+    private class MetricInfo
+    {
+        [JsonProperty("elapsed")] public TimeSpan Elapsed { get; set; }
+        [JsonProperty("count")] public int Count { get; set; }
+        [JsonProperty("measured_bpm")] public int MeasuredBpm { get; set; }
+        [JsonProperty("ms")] public int Ms { get; set; }
+    }
+
+    private class Record
+    {
+        public int Bpm { get; set; }
+        public List<MetricInfo> Metric { get; set; }
+    }
+
+    private Record _sessionRecord = null;
+    
     private void ExecBeat()
     {
         currentTime = DateTime.Now;
@@ -188,6 +207,8 @@
 
         if (Timers.beatTimer == null || Timers.beatTimer.Enabled != true)
         {
+            _sessionRecord = new Record();
+            _sessionRecord.Metric = new List<MetricInfo>();
             StartTimer();
         }
 
@@ -236,6 +257,17 @@
                 bpmAverage20 = bpmAverageValue20.ToString();
                 stability = (20 - Math.Abs(currentBPM - (bpmAverageValue10 + bpmAverageValue15 + bpmAverageValue20) / 3)) / 20 * 100;
             }
+
+            _sessionRecord.Bpm = (int) currentBPM;
+            var newMetric = new MetricInfo
+            {
+                MeasuredBpm = (int) currentBPM,
+                Count = (int) currentCount,
+                Elapsed = new TimeSpan(0,0,elapsedSecond),
+                Ms = (int) recentTimeMs
+            };
+            
+            _sessionRecord.Metric.Add(newMetric);
         }
         else
         {
@@ -254,6 +286,34 @@
         return currentBPM <= 0 ? (short) 0 : Convert.ToInt16(Math.Round(60000 / currentBPM));
     }
 
+
+    private void DownloadJson()
+    {
+        var result = GenerateMetricJson();
+        if (result != null)
+        {
+            var bytes = System.Text.Encoding.UTF8.GetBytes(result);
+            SaveAs(JSRuntime, "result.json", bytes);
+        }
+    }
+    
+    private string GenerateMetricJson()
+    {
+        if (_sessionRecord != null)
+        {
+            return JsonConvert.SerializeObject(_sessionRecord);
+        }
+        return null;
+    }
+    
+    public async static Task SaveAs(IJSRuntime js, string filename, byte[] data)
+    {
+        await js.InvokeAsync<object>(
+            "saveAsFile",
+            filename,
+            Convert.ToBase64String(data));
+    }            
+    
     private void Rebase()
     {
         if (Timers.beatTimer != null && Timers.beatTimer.Enabled && currentBPM > 0)
