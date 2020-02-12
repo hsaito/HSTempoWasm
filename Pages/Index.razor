@@ -192,8 +192,9 @@
 
     private class Record
     {
-        public int Bpm { get; set; }
-        public List<MetricInfo> Metric { get; set; }
+        [JsonProperty("average_bpm")] public int AverageBpm { get; set; }
+        [JsonProperty("average_ms")] public int AverageMs { get; set; }
+        [JsonProperty("metric")] public List<MetricInfo> Metric { get; set; }
     }
 
     private Record _sessionRecord = null;
@@ -258,7 +259,8 @@
                 stability = (20 - Math.Abs(currentBPM - (bpmAverageValue10 + bpmAverageValue15 + bpmAverageValue20) / 3)) / 20 * 100;
             }
 
-            _sessionRecord.Bpm = (int) currentBPM;
+            _sessionRecord.AverageBpm = (int) currentBPM;
+            _sessionRecord.AverageMs = (int) averageMS;
             var newMetric = new MetricInfo
             {
                 MeasuredBpm = (int) currentBPM,
