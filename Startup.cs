@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Components.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HSTempoWasm
@@ -9,9 +8,9 @@ namespace HSTempoWasm
         {
         }
 
-        public void Configure(IComponentsApplicationBuilder app)
-        {
-            app.AddComponent<App>("app");
-        }
+        // public void Configure(IComponentsApplicationBuilder app)
+        // {
+        //     app.AddComponent<App>("app");
+        // }
     }
 }
