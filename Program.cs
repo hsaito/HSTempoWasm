@@ -8,29 +8,29 @@ namespace HSTempoWasm
     {
         internal static void StopAll()
         {
-            if (beatTimer != null && beatTimer.Enabled)
+            if (BeatTimer != null && BeatTimer.Enabled)
             {
-                beatTimer.Enabled = false;
-                beatTimer.Stop();
-                beatTimer.Close();
+                BeatTimer.Enabled = false;
+                BeatTimer.Stop();
+                BeatTimer.Close();
             }
 
-            if (vdiTick != null)
+            if (VdiTick != null)
             {
-                vdiTick.Enabled = false;
-                vdiTick.Close();
+                VdiTick.Enabled = false;
+                VdiTick.Close();
             }
 
-            if (vdiTock != null)
+            if (VdiTock != null)
             {
-                vdiTock.Enabled = false;
-                vdiTock.Close();
+                VdiTock.Enabled = false;
+                VdiTock.Close();
             }
         }
 
-        internal static Timer beatTimer;
-        internal static Timer vdiTick;
-        internal static Timer vdiTock;
+        internal static Timer BeatTimer;
+        internal static Timer VdiTick;
+        internal static Timer VdiTock;
     }
 
     public class Program
