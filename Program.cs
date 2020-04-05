@@ -27,10 +27,10 @@ namespace HSTempoWasm
                 VdiTock.Close();
             }
         }
-
-        internal static Timer BeatTimer;
-        internal static Timer VdiTick;
-        internal static Timer VdiTock;
+        
+        public static Timer BeatTimer;
+        public static Timer VdiTock;
+        public static Timer VdiTick;
     }
 
     public class Program
