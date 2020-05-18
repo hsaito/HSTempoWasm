@@ -15,7 +15,7 @@ RUN dotnet publish -c Release -o /app
 FROM nginx:latest
 WORKDIR /usr/share/nginx/html
 #RUN rm -rf *
-COPY --from=build /app/HSTempoWasm/dist ./
+COPY --from=build /app/wwwroot ./
 
 EXPOSE 80
 EXPOSE 443
