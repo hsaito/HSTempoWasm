@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
 
 namespace HSTempoWasm.Pages
 {
-    public partial class Index
+    public partial class Tempo
     {
         private int currentCount = 0;
         private double currentBPM = 0;
@@ -38,6 +40,8 @@ namespace HSTempoWasm.Pages
         private DateTime lastTime;
         private double recentTimeMs;
 
+        [Inject] private ILogger<Tempo> Logger {get;set;}
+        
         double stability = 0;
 
         protected override void OnAfterRender(bool firstRender)
@@ -45,6 +49,7 @@ namespace HSTempoWasm.Pages
             if (firstRender)
             {
                 JSRuntime.InvokeVoidAsync("setFocus", "beatButton");
+                Logger.LogInformation("HSTempoWasm ready. Ready to measure.");
             }
         }
 
