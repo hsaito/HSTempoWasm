@@ -3,12 +3,7 @@
   "name": "HSTempo",
   "icons": [
     {
-      "src": "/images/hslogo192.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "/images/hslogo512.png",
+      "src": "/icon-512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
