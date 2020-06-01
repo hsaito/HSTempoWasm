@@ -45,7 +45,7 @@
                                     Your browser does not support the
                                     <code>audio</code> element.
                                 </audio>
-                                <input type="checkbox" @bind="@audibleBeat" class="form-check-input" id="audibleBeat"> Audible Beat
+                                <input type="checkbox" checked="@AudibleState.Value.Audible" @onclick="@ToggleAudibleCheck" class="form-check-input" id="audibleBeat"> Audible Beat
                             </div>
                             <div class="col-sm">
                                 <button class="btn btn-outline-secondary" onclick="playBeat()">Test Beat</button>

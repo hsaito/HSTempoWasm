@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Timers;
+using Fluxor;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -47,6 +48,9 @@ namespace HSTempoWasm
             builder.Services.AddLogging(builder => builder
                 .SetMinimumLevel(LogLevel.Information)
             );
+            var currentAssembly = typeof(Program).Assembly;
+            builder.Services.AddFluxor(options => options.ScanAssemblies(currentAssembly));
+            
             await builder.Build().RunAsync();
         }
 

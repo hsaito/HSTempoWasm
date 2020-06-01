@@ -1,5 +1,7 @@
 @page "/about"
 @using System.Reflection
+@using Fluxor
+@using HSTempoWasm.Store.AudibleBeat
 
 <h1>About HSTempo</h1>
 
@@ -39,6 +41,10 @@
 <div class="card">
     <div class="card-body">
         <h2 class="card-title">Changelog</h2>
+        <h3 class="card-title">1.4.0.5 (2020-05-21)</h3>
+        <ul>
+            <li>Housekeeping update. Some reorganization of dependencies.</li>
+        </ul>
         <h3 class="card-title">1.4.0.4 (2020-05-19)</h3>
         <ul>
             <li>Updated the library to the <a href="https://devblogs.microsoft.com/aspnet/blazor-webassembly-3-2-0-now-available/">official release of Blazor WebAssembly</a>.</li>
@@ -106,11 +112,14 @@
     string version;
     string author;
 
+    [Inject] public IDispatcher Dispatcher { get; set; }
+    [Inject] private IState<AudibleState> AudibleState { get; set; }
     protected override void OnInitialized()
     {
         programName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
         version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
         author = (System.Reflection.Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCompanyAttribute), false)[0] as AssemblyCompanyAttribute)?.Company;
         Timers.StopAll();
+        Dispatcher.Dispatch(new ResetAudible());
     }
 }

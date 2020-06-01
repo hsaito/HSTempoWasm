@@ -5,6 +5,8 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Timers;
+using Fluxor;
+using HSTempoWasm.Store.AudibleBeat;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Logging;
@@ -34,14 +36,14 @@ namespace HSTempoWasm.Pages
         int bpmInterval = 0;
 
         bool vdiCheck;
-        bool audibleBeat;
 
         private DateTime currentTime;
         private DateTime startTime;
         private DateTime lastTime;
         private double recentTimeMs;
 
-        [Inject] private ILogger<Tempo> Logger {get;set;}
+        [Inject] public IDispatcher Dispatcher { get; set; }
+        [Inject] private IState<AudibleState> AudibleState { get; set; }
         
         double stability = 0;
 
@@ -50,7 +52,6 @@ namespace HSTempoWasm.Pages
             if (firstRender)
             {
                 JSRuntime.InvokeVoidAsync("setFocus", "beatButton");
-                Logger.LogInformation("HSTempoWasm ready. Ready to measure.");
             }
         }
 
@@ -283,7 +284,7 @@ namespace HSTempoWasm.Pages
 
         private void ProcessTick(object sender, ElapsedEventArgs elapsedEventArgs)
         {
-            if (audibleBeat)
+            if (AudibleState.Value.Audible)
             {
                 JSRuntime.InvokeVoidAsync("playBeat");
             }
@@ -309,7 +310,7 @@ namespace HSTempoWasm.Pages
                 Timers.VdiTock.Close();
             }
 
-            audibleBeat = false;
+            Dispatcher.Dispatch(new ResetAudible());
             vdiCheck = false;
 
             currentCount = 0;
@@ -354,6 +355,12 @@ namespace HSTempoWasm.Pages
             elapsedSecond = 0;
             currentBPM = 0;
             recentTimeMs = 0;
+        }
+
+        private void ToggleAudibleCheck()
+        {
+            Dispatcher.Dispatch(new ToggleAudible());
+            InvokeAsync(StateHasChanged);
         }
     }
 }
