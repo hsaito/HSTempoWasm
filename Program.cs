@@ -2,7 +2,6 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Timers;
-using Blazor.Extensions.Logging;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -46,7 +45,6 @@ namespace HSTempoWasm
             builder.RootComponents.Add<App>("app");
             builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddLogging(builder => builder
-                .AddBrowserConsole()
                 .SetMinimumLevel(LogLevel.Information)
             );
             await builder.Build().RunAsync();

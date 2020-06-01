@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Timers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
-using Newtonsoft.Json;
 
 namespace HSTempoWasm.Pages
 {
@@ -90,17 +91,17 @@ namespace HSTempoWasm.Pages
 
         private class MetricInfo
         {
-            [JsonProperty("elapsed")] public TimeSpan Elapsed { get; set; }
-            [JsonProperty("count")] public int Count { get; set; }
-            [JsonProperty("measured_bpm")] public int MeasuredBpm { get; set; }
-            [JsonProperty("ms")] public int Ms { get; set; }
+            [JsonPropertyName("elapsed")] public TimeSpan Elapsed { get; set; }
+            [JsonPropertyName("count")] public int Count { get; set; }
+            [JsonPropertyName("measured_bpm")] public int MeasuredBpm { get; set; }
+            [JsonPropertyName("ms")] public int Ms { get; set; }
         }
 
         private class Record
         {
-            [JsonProperty("average_bpm")] public int AverageBpm { get; set; }
-            [JsonProperty("average_ms")] public int AverageMs { get; set; }
-            [JsonProperty("metric")] public List<MetricInfo> Metric { get; set; }
+            [JsonPropertyName("average_bpm")] public int AverageBpm { get; set; }
+            [JsonPropertyName("average_ms")] public int AverageMs { get; set; }
+            [JsonPropertyName("metric")] public List<MetricInfo> Metric { get; set; }
         }
 
         private Record _sessionRecord = null;
@@ -211,7 +212,7 @@ namespace HSTempoWasm.Pages
         {
             if (_sessionRecord != null)
             {
-                return JsonConvert.SerializeObject(_sessionRecord);
+                return JsonSerializer.Serialize(_sessionRecord);
             }
 
             return null;
