@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using Fluxor;
 using HSTempoWasm.Store.AudibleBeat;
+using HSTempoWasm.Store.VBI;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Logging;
@@ -37,14 +38,21 @@ namespace HSTempoWasm.Pages
 
         bool vdiCheck;
 
+        private const string vbiInactiveStyle = "btn btn-dark";
+        private const string vbiActiveStyle = "btn btn-success";
+
         private DateTime currentTime;
         private DateTime startTime;
         private DateTime lastTime;
         private double recentTimeMs;
 
+        private string meterBoxMode = "VBI";
+        private int meterBoxModeNumeric = 1;
+
         [Inject] public IDispatcher Dispatcher { get; set; }
         [Inject] private IState<AudibleState> AudibleState { get; set; }
-        
+        [Inject] private IState<VBIState> VBIState { get; set; }
+
         double stability = 0;
 
         protected override void OnAfterRender(bool firstRender)
@@ -52,6 +60,66 @@ namespace HSTempoWasm.Pages
             if (firstRender)
             {
                 JSRuntime.InvokeVoidAsync("setFocus", "beatButton");
+            }
+        }
+
+        private string vbi1 = vbiInactiveStyle;
+        private string vbi2 = vbiInactiveStyle;
+        private string vbi3 = vbiInactiveStyle;
+        private string vbi4 = vbiInactiveStyle;
+
+        void UpdateVbi(int mode)
+        {
+            switch (mode)
+            {
+                case 0:
+                {
+                    vbi1 = vbiInactiveStyle;
+                    vbi2 = vbiInactiveStyle;
+                    vbi3 = vbiInactiveStyle;
+                    vbi4 = vbiInactiveStyle;
+                    break;
+                }
+                case 1:
+                {
+                    vbi1 = vbiActiveStyle;
+                    vbi2 = vbiInactiveStyle;
+                    vbi3 = vbiInactiveStyle;
+                    vbi4 = vbiInactiveStyle;
+                    break;
+                }
+                case 2:
+                {
+                    vbi1 = vbiInactiveStyle;
+                    vbi2 = vbiActiveStyle;
+                    vbi3 = vbiInactiveStyle;
+                    vbi4 = vbiInactiveStyle;
+                    break;
+                }
+                case 3:
+                {
+                    vbi1 = vbiInactiveStyle;
+                    vbi2 = vbiInactiveStyle;
+                    vbi3 = vbiActiveStyle;
+                    vbi4 = vbiInactiveStyle;
+                    break;
+                }
+                case 4:
+                {
+                    vbi1 = vbiInactiveStyle;
+                    vbi2 = vbiInactiveStyle;
+                    vbi3 = vbiInactiveStyle;
+                    vbi4 = vbiActiveStyle;
+                    break;
+                }
+                case 5:
+                {
+                    vbi1 = vbiActiveStyle;
+                    vbi2 = vbiActiveStyle;
+                    vbi3 = vbiActiveStyle;
+                    vbi4 = vbiActiveStyle;
+                    break;
+                }
             }
         }
 
@@ -191,6 +259,8 @@ namespace HSTempoWasm.Pages
             }
 
             lastTime = currentTime;
+            Dispatcher.Dispatch(new VBIResetAction());
+            UpdateVbi(VBIState.Value.VBIStateNumber);
         }
 
         private short CalculateBPMtoMS()
@@ -231,6 +301,8 @@ namespace HSTempoWasm.Pages
         {
             if (Timers.BeatTimer != null && Timers.BeatTimer.Enabled && currentBPM > 0)
             {
+                Dispatcher.Dispatch(new VBIResetAction());
+                UpdateVbi(VBIState.Value.VBIStateNumber);
                 Timers.VdiTick.Enabled = false;
                 Timers.VdiTock.Enabled = false;
                 Timers.VdiTick.Enabled = true;
@@ -267,8 +339,9 @@ namespace HSTempoWasm.Pages
 
         private void ProcessTock(object sender, ElapsedEventArgs e)
         {
-            vdiCheck = false;
+            Dispatcher.Dispatch(new VBITock(meterBoxModeNumeric));
             Timers.VdiTock.Enabled = false;
+            UpdateVbi(VBIState.Value.VBIStateNumber);
             this.StateHasChanged();
         }
 
@@ -289,7 +362,8 @@ namespace HSTempoWasm.Pages
                 JSRuntime.InvokeVoidAsync("playBeat");
             }
 
-            vdiCheck = true;
+            Dispatcher.Dispatch(new VBITick(meterBoxModeNumeric));
+            UpdateVbi(VBIState.Value.VBIStateNumber);
             this.StateHasChanged();
             Timers.VdiTock.Enabled = true;
         }
@@ -311,7 +385,8 @@ namespace HSTempoWasm.Pages
             }
 
             Dispatcher.Dispatch(new ResetAudible());
-            vdiCheck = false;
+            Dispatcher.Dispatch(new VBIResetAction());
+            UpdateVbi(VBIState.Value.VBIStateNumber);
 
             currentCount = 0;
             averageMS = 0;
@@ -361,6 +436,26 @@ namespace HSTempoWasm.Pages
         {
             Dispatcher.Dispatch(new ToggleAudible());
             InvokeAsync(StateHasChanged);
+        }
+
+
+        private async Task HandleMeterUpdate(ChangeEventArgs arg)
+        {
+            meterBoxMode = (string) arg.Value;
+
+            Console.Out.WriteLine(meterBoxMode);
+
+            meterBoxModeNumeric = meterBoxMode switch
+            {
+                "VBI" => 1,
+                "2/4" => 2,
+                "3/4" => 3,
+                "4/4" => 4,
+                _ => meterBoxModeNumeric
+            };
+
+            Dispatcher.Dispatch(new VBIResetAction());
+            UpdateVbi(VBIState.Value.VBIStateNumber);
         }
     }
 }

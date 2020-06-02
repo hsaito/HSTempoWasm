@@ -8,8 +8,22 @@
             <div class="card">
                 <div class="card-body">
 
-                    <div style="padding-left: 2em">
-                        <p><input type="checkbox" @bind="@vdiCheck" class="form-check-input" id="vbi"> VBI</p>
+                    <div style="padding-left: 2em; margin-bottom: 5px;">
+                        <span class="input-group">
+                            <span class="btn-group">
+                                <button type="button" class="@vbi1">1</button>
+                                <button type="button" class="@vbi2">2</button>
+                                <button type="button" class="@vbi3">3</button>
+                                <button type="button" class="@vbi4">4</button>
+                            </span>
+
+                            <select class="custom-select" value="@meterBoxMode" @onchange="@HandleMeterUpdate" id="MeterBoxSelect">
+                                <option value="VBI" selected>VBI</option>
+                                <option value="2/4">2/4</option>
+                                <option value="3/4">3/4</option>
+                                <option value="4/4">4/4</option>
+                            </select>
+                        </span>
                     </div>
                     <div class="container" style="font-size: small;">
                         <div class="row">
