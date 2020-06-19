@@ -42,6 +42,10 @@
 <div class="card">
     <div class="card-body">
         <h2 class="card-title">Changelog</h2>
+        <h3 class="card-title">1.5.1.0 (2020-06-18)</h3>
+        <ul>
+            <li>Minor dependency update.</li>
+        </ul>
         <h3 class="card-title">1.5.0.0 (2020-06-02)</h3>
         <ul>
             <li>Improved VBI, now with support for 2/4, 3/4, 4/4 meters as well as the original VBI.</li>
@@ -117,8 +121,12 @@
     string version;
     string author;
 
-    [Inject] public IDispatcher Dispatcher { get; set; }
-    [Inject] private IState<AudibleState> AudibleState { get; set; }
+    [Inject]
+    public IDispatcher Dispatcher { get; set; }
+
+    [Inject]
+    private IState<AudibleState> AudibleState { get; set; }
+
     protected override void OnInitialized()
     {
         programName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
