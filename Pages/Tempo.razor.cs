@@ -279,12 +279,7 @@ namespace HSTempoWasm.Pages
 
         private string GenerateMetricJson()
         {
-            if (_sessionRecord != null)
-            {
-                return JsonSerializer.Serialize(_sessionRecord);
-            }
-
-            return null;
+            return _sessionRecord != null ? JsonSerializer.Serialize(_sessionRecord) : null;
         }
 
         public async static Task SaveAs(IJSRuntime js, string filename, byte[] data)
@@ -323,16 +318,14 @@ namespace HSTempoWasm.Pages
 
         private void AdjustDown()
         {
-            if (Timers.BeatTimer != null && Timers.BeatTimer.Enabled && currentBPM > 0)
-            {
-                Timers.VdiTick.Enabled = false;
-                Timers.VdiTock.Enabled = false;
-                currentBPM--;
-                Timers.VdiTick.Interval = 60000 / currentBPM;
-                Timers.VdiTock.Interval = 60000 / currentBPM / 3;
-                Timers.VdiTick.Enabled = true;
-                bpmInterval = CalculateBPMtoMS();
-            }
+            if (Timers.BeatTimer == null || !Timers.BeatTimer.Enabled || !(currentBPM > 0)) return;
+            Timers.VdiTick.Enabled = false;
+            Timers.VdiTock.Enabled = false;
+            currentBPM--;
+            Timers.VdiTick.Interval = 60000 / currentBPM;
+            Timers.VdiTock.Interval = 60000 / currentBPM / 3;
+            Timers.VdiTick.Enabled = true;
+            bpmInterval = CalculateBPMtoMS();
         }
 
         private void ProcessTock(object sender, ElapsedEventArgs e)
@@ -413,7 +406,7 @@ namespace HSTempoWasm.Pages
         private void ProcessSecond(object sender, ElapsedEventArgs elapsedEventArgs)
         {
             elapsedSecond++;
-            this.StateHasChanged();
+            StateHasChanged();
         }
 
         private void StopTimer()
@@ -441,7 +434,7 @@ namespace HSTempoWasm.Pages
         {
             meterBoxMode = (string) arg.Value;
 
-            Console.Out.WriteLine(meterBoxMode);
+            //Console.Out.WriteLine(meterBoxMode);
 
             meterBoxModeNumeric = meterBoxMode switch
             {
