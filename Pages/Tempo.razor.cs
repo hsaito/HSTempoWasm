@@ -36,8 +36,6 @@ namespace HSTempoWasm.Pages
         int averageMS = 0;
         int bpmInterval = 0;
 
-        bool vdiCheck;
-
         private const string vbiInactiveStyle = "btn btn-dark";
         private const string vbiActiveStyle = "btn btn-success";
 
@@ -269,13 +267,13 @@ namespace HSTempoWasm.Pages
         }
 
 
-        private void DownloadJson()
+        private async Task DownloadJson()
         {
             var result = GenerateMetricJson();
             if (result != null)
             {
                 var bytes = System.Text.Encoding.UTF8.GetBytes(result);
-                SaveAs(JSRuntime, "result.json", bytes);
+                await SaveAs(JSRuntime, "result.json", bytes);
             }
         }
 
@@ -456,6 +454,7 @@ namespace HSTempoWasm.Pages
 
             Dispatcher.Dispatch(new VBIResetAction());
             UpdateVbi(VBIState.Value.VBIStateNumber);
+            await Task.CompletedTask;
         }
     }
 }
