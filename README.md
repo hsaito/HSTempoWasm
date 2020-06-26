@@ -8,7 +8,7 @@ This repository contains a source code from HSTempoWasm, a Blazor WebAssembly in
 
 ## Using HSTempoWasm
 
-###The Official Instance
+### The Official Instance
 
 The official instance of this application can be found at [https://hstempo.hidekisaito.com](https://hstempo.hidekisaito.com).
 
