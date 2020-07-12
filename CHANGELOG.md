@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.1.1 (2020-07-12)
+
+-   Release version
+
 ## 1.6.1.0 (2020-07-12)
 
 -   Added localization support.
