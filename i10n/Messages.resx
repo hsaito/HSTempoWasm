@@ -69,7 +69,7 @@
     <data name="LABEL_AVERAGE" xml:space="preserve">
         <value>Average (10/15/20):</value>
     </data>
-    <data name="LABEL_LAST" xml:space="preserve">
+    <data name="LABEL_BEAT_LAST" xml:space="preserve">
         <value>Last:</value>
     </data>
     <data name="LABEL_BEAT_AVERAGE" xml:space="preserve">
@@ -91,6 +91,15 @@
         <value>更新履歴</value>
     </data>
     <data name="TEXT_HELP_HOWTO" xml:space="preserve">
-        <value>Please refer to &lt;a href="{0}"&gt;the help&lt;/a&gt; for more information.</value>
+        <value>Please refer to the help  for more information.</value>
+    </data>
+    <data name="MENU_HOME" xml:space="preserve">
+        <value>Home</value>
+    </data>
+    <data name="MENU_HELP" xml:space="preserve">
+        <value>Help</value>
+    </data>
+    <data name="MENU_ABOUT" xml:space="preserve">
+        <value>About</value>
     </data>
 </root>

@@ -147,9 +147,9 @@ namespace HSTempoWasm.i10n {
             }
         }
         
-        internal static string LABEL_LAST {
+        internal static string LABEL_BEAT_LAST {
             get {
-                return ResourceManager.GetString("LABEL_LAST", resourceCulture);
+                return ResourceManager.GetString("LABEL_BEAT_LAST", resourceCulture);
             }
         }
         
@@ -192,6 +192,24 @@ namespace HSTempoWasm.i10n {
         internal static string TEXT_HELP_HOWTO {
             get {
                 return ResourceManager.GetString("TEXT_HELP_HOWTO", resourceCulture);
+            }
+        }
+        
+        internal static string MENU_HOME {
+            get {
+                return ResourceManager.GetString("MENU_HOME", resourceCulture);
+            }
+        }
+        
+        internal static string MENU_HELP {
+            get {
+                return ResourceManager.GetString("MENU_HELP", resourceCulture);
+            }
+        }
+        
+        internal static string MENU_ABOUT {
+            get {
+                return ResourceManager.GetString("MENU_ABOUT", resourceCulture);
             }
         }
     }

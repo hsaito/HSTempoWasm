@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using System.Timers
+@using HSTempoWasm.i10n
 @inject IJSRuntime JSRuntime;
 
 <div @onkeypress="@GetKeyPress">
@@ -28,13 +29,13 @@
                     <div class="container" style="font-size: small;">
                         <div class="row">
                             <div class="col-sm">
-                                Elapsed Time: @elapsedSecond
+                                @Messages.LABEL_ELAPSED @elapsedSecond
                             </div>
                             <div class="col-sm">
-                                Beat Count: @currentCount
+                                @Messages.LABEL_BEAT_COUNT @currentCount
                             </div>
                             <div class="col-sm">
-                                Average (10/15/20): @bpmAverage10 / @bpmAverage15 / @bpmAverage20
+                                @Messages.LABEL_AVERAGE @bpmAverage10 / @bpmAverage15 / @bpmAverage20
                             </div>
                         </div>
                     </div>
@@ -43,14 +44,14 @@
 
             <div class="card">
                 <div class="card-body">
-                    <p>BPM: @currentBPM</p>
+                    <p>@Messages.LABEL_BPM @currentBPM</p>
 
                     <div class="container" style="font-size: small;">
                         <div class="row">
                             <div class="col-sm">
-                                <button class="btn btn-outline-secondary" @onclick="AdjustUp">Adjust Up</button>
-                                <button class="btn btn-outline-secondary" @onclick="AdjustDown">Adjust Down</button>
-                                <button class="btn btn-outline-secondary" @onclick="Rebase">Rebase</button>
+                                <button class="btn btn-outline-secondary" @onclick="AdjustUp">@Messages.BUTTON_ADJUST_UP</button>
+                                <button class="btn btn-outline-secondary" @onclick="AdjustDown">@Messages.BUTTON_ADJUST_DOWN</button>
+                                <button class="btn btn-outline-secondary" @onclick="Rebase">@Messages.BUTTON_REBASE</button>
                             </div>
                             <div class="col-sm">
                                 <audio
@@ -59,11 +60,11 @@
                                     Your browser does not support the
                                     <code>audio</code> element.
                                 </audio>
-                                <input type="checkbox" checked="@AudibleState.Value.Audible" @onclick="@ToggleAudibleCheck" class="form-check-input" id="audibleBeat"> Audible Beat
+                                <input type="checkbox" checked="@AudibleState.Value.Audible" @onclick="@ToggleAudibleCheck" class="form-check-input" id="audibleBeat"> @Messages.LABEL_AUDIBLE_BEAT
                             </div>
                             <div class="col-sm">
-                                <button class="btn btn-outline-secondary" onclick="playBeat()">Test Beat</button>
-                                <button class="btn btn-outline-secondary" @onclick="DownloadJson">Download Metric</button>
+                                <button class="btn btn-outline-secondary" onclick="playBeat()">@Messages.BUTTON_TEST_BEAT</button>
+                                <button class="btn btn-outline-secondary" @onclick="DownloadJson">@Messages.BUTTON_DOWNLOAD_METRIC</button>
                             </div>
                         </div>
 
@@ -75,7 +76,7 @@
 
     <div class="card">
         <div class="card-body">
-            Stability
+            @Messages.LABEL_STABILITY
             <div class="progress">
                 <div class="progress-bar" role="progressbar" style="width: @stability%" aria-valuenow="@stability" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
@@ -87,10 +88,10 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm">
-                        <button class="btn btn-primary" id="beatButton" style="padding-top: 1.5em; padding-bottom: 1.5em; width: 100%;" ontouch="ExecBeat" @onclick="ExecBeat">Beat</button>
+                        <button class="btn btn-primary" id="beatButton" style="padding-top: 1.5em; padding-bottom: 1.5em; width: 100%;" ontouch="ExecBeat" @onclick="ExecBeat">@Messages.BUTTON_BEAT</button>
                     </div>
                     <div class="col-sm">
-                        <button class="btn btn-danger" id="resetButton" style="padding-top: 1.5em; padding-bottom: 1.5em; width: 100%;" ontouch="Reset" @onclick="Reset">Reset</button>
+                        <button class="btn btn-danger" id="resetButton" style="padding-top: 1.5em; padding-bottom: 1.5em; width: 100%;" ontouch="Reset" @onclick="Reset">@Messages.BUTTON_RESET</button>
                     </div>
                 </div>
             </div>
@@ -102,13 +103,13 @@
             <div class="container" style="font-size: small;">
                 <div class="row">
                     <div class="col-sm">
-                        Last: @recentTimeMs ms
+                        @Messages.LABEL_BEAT_LAST @recentTimeMs ms
                     </div>
                     <div class="col-sm">
-                        Average: @averageMS ms
+                        @Messages.LABEL_BEAT_AVERAGE @averageMS ms
                     </div>
                     <div class="col-sm">
-                        BPM Interval: @bpmInterval ms
+                        @Messages.LABEL_BEAT_BPM_INTERVAL @bpmInterval ms
                     </div>
                 </div>
             </div>
@@ -117,7 +118,7 @@
 
     <div class="card">
         <div class="card-body">
-            <p class="card-text" style="font-size: x-small;"><span style="color: red;">Warning</span>: Various factors may affect accuracy of the measurement. Do not rely on this system for mission critical applications. The HSTempoWasm developers are not responsible for any damages caused by use of this system.</p>
+            <p class="card-text" style="font-size: x-small;"><span class="oi oi-warning"/> @Messages.TEXT_WARNING_ACCURACY</p>
         </div>
     </div>
 </div>
