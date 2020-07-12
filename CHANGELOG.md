@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.1.0 (2020-07-12)
+
+-   Added localization support.
+-   Added Japanese localization.
+
 ## 1.6.0.0 (2020-06-25)
 
 -   Source code now [available](https://github.com/hsaito/HSTempoWasm).
