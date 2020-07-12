@@ -1,6 +1,7 @@
 @page "/about"
 @using System.Reflection
 @using Fluxor
+@using HSTempoWasm.i10n
 @using HSTempoWasm.Store.AudibleBeat
 @using Microsoft.AspNetCore.Components
 
@@ -12,6 +13,7 @@
         <div>
             <div>©2020 Hideki Saito</div>
             <div>MIT license (<a href="https://github.com/hsaito/HSTempoWasm" target="_blank">Source Code</a>)</div>
+            <div><a href="@Messages.LOCATION_CHANGELOG">@Messages.TEXT_CHANGELOG</a></div>
         </div>
 
         <div>
@@ -37,84 +39,6 @@
                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAMAAAC6V+0/AAAA0lBMVEUAAAA0SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV40SV4cp04wAAAARXRSTlMAAQIDBQYJDg8REhMUFRYpLDU2Nzg6Oz0+RElKS05PUFRYXGJmZ2hpfoOFjI+bnZ6jpa2wubq8wNrk5ujp6+3x8/X3+/3WC+8PAAAA5ElEQVQYV2WQ2VLCQBBFT5gxgImCK3HFmLAouIFANOAkIf3/v+TDpCCW9/F0V93uA4DXC6N4OIyjMPCxcT9FJDPGmExEFi6ASn7OdTVHn24SBfTlmF087csDsPzYM1cWvK2AIgZoT9J00nZe7oi2gNwDnTJ9fkq3HeBGHBy5Bp3PFah5ruFKGhZeSAugJT0LG3ILoTgAjjzWNi+lCdCUoAZ1MVOgZsWBhba9W36Px19lt2qv7vSm6/X0ELB3Lt/5k9cV0JejOrO/q2Rztrd0Yi1Zn7nJMpPvfAJ+EEaD0WhQM/8/v/3bICZbg6qkAAAAAElFTkSuQmCC" alt="Instagram" title="Instagram"/>
             </a>
         </div>
-    </div>
-</div>
-
-<div class="card">
-    <div class="card-body">
-        <h2 class="card-title">Changelog</h2>
-        <h3 class="card-title">1.6.0.0 (2020-06-25)</h3>
-        <ul>
-            <li>Source code now <a href="https://github.com/hsaito/HSTempoWasm">available</a>.</li>
-        </ul>
-        <h3 class="card-title">1.5.1.1 (2020-06-21)</h3>
-        <ul>
-            <li>Minor code fix.</li>
-            </ul>
-        <h3 class="card-title">1.5.1.0 (2020-06-18)</h3>
-        <ul>
-            <li>Minor dependency update.</li>
-        </ul>
-        <h3 class="card-title">1.5.0.0 (2020-06-02)</h3>
-        <ul>
-            <li>Improved VBI, now with support for 2/4, 3/4, 4/4 meters as well as the original VBI.</li>
-        </ul>
-        <h3 class="card-title">1.4.0.5 (2020-05-31)</h3>
-        <ul>
-            <li>Housekeeping update. Some reorganization of dependencies.</li>
-        </ul>
-        <h3 class="card-title">1.4.0.4 (2020-05-19)</h3>
-        <ul>
-            <li>Updated the library to the <a href="https://devblogs.microsoft.com/aspnet/blazor-webassembly-3-2-0-now-available/">official release of Blazor WebAssembly</a>.</li>
-            <li>Added logging. (Minimal console logging on the browser.)</li>
-        </ul>
-        <h3 class="card-title">1.4.0.3 (2020-05-14)</h3>
-        <ul>
-            <li>Cosmetic updates.</li>
-        </ul>
-        <h3 class="card-title">1.4.0.2 (2020-05-10)</h3>
-        <ul>
-            <li>Updated the library to <a href="https://devblogs.microsoft.com/aspnet/blazor-webassembly-3-2-0-release-candidate-now-available/">3.2.0 Release Candidate 1</a></li>
-        </ul>
-        <h3 class="card-title">1.4.0.1 (2020-04-05)</h3>
-        <ul>
-            <li>Updated the library to <a href="https://devblogs.microsoft.com/aspnet/blazor-webassembly-3-2-0-preview-3-release-now-available/">3.2.0 Preview 3</a></li>
-        </ul>
-        <h3 class="card-title">1.4.0.0 (2020-02-12)</h3>
-        <ul>
-            <li>Updated the library to <a href="https://devblogs.microsoft.com/aspnet/blazor-webassembly-3-2-0-preview-1-release-now-available/">3.2.0 Preview 1</a></li>
-            <li>You can now download metric file.</li>
-        </ul>
-        <h3 class="card-title">1.3.1.3 (2020-01-10)</h3>
-        <ul>
-            <li>Made the reset button turns off the audible beat.</li>
-        </ul>
-        <h3 class="card-title">1.3.1.2 (2020-01-03)</h3>
-        <ul>
-            <li>Added the test button. (Workaround for mobile.)</li>
-        </ul>
-        <h3 class="card-title">1.3.1.1 (2019-12-31)</h3>
-        <ul>
-            <li>Fixed the bug that page transition did not stop the beats.</li>
-        </ul>
-        <h3 class="card-title">1.3.1.0 (2019-12-31)</h3>
-        <ul>
-            <li>Added the audible beat feature.</li>
-            <li>Added the Rebase button</li>
-        </ul>
-        <h3 class="card-title">1.3.0.1 (2019-12-31)</h3>
-        <ul>
-            <li>Made the system compatible with <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.</li>
-        </ul>
-        <h3 class="card-title">1.3.0.0 (2019-12-29)</h3>
-        <ul>
-            <li>Added the BPM averaging.</li>
-            <li>Added the Stability meter.</li>
-        </ul>
-        <h3 class="card-title">1.2.2.1 (2019-12-28)</h3>
-        <ul>
-            <li>Attempt to fix issue under <a href="https://www.mozilla.org/en-US/firefox/mobile/" target="_blank">Firefox on Android</a>.</li>
-        </ul>
     </div>
 </div>
 

@@ -1,0 +1,98 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="BUTTON_BEAT" xml:space="preserve">
+        <value>ビート</value>
+    </data>
+    <data name="BUTTON_RESET" xml:space="preserve">
+        <value>リセット</value>
+    </data>
+    <data name="LABEL_STABILITY" xml:space="preserve">
+        <value>安定度</value>
+    </data>
+    <data name="LABEL_BPM" xml:space="preserve">
+        <value>BPM</value>
+    </data>
+    <data name="LABEL_AUDIBLE_BEAT" xml:space="preserve">
+        <value>クリック音</value>
+    </data>
+    <data name="BUTTON_TEST_BEAT" xml:space="preserve">
+        <value>クリック音テスト</value>
+    </data>
+    <data name="BUTTON_DOWNLOAD_METRIC" xml:space="preserve">
+        <value>計測情報ダウンロード</value>
+    </data>
+    <data name="BUTTON_ADJUST_UP" xml:space="preserve">
+        <value>BPM上補正</value>
+    </data>
+    <data name="BUTTON_ADJUST_DOWN" xml:space="preserve">
+        <value>BPM下補正</value>
+    </data>
+    <data name="BUTTON_REBASE" xml:space="preserve">
+        <value>タイミングリセット</value>
+    </data>
+    <data name="METER_VBI" xml:space="preserve">
+        <value>ビート表示インジケーター</value>
+    </data>
+    <data name="METER_2_4" xml:space="preserve">
+        <value>二拍子</value>
+    </data>
+    <data name="METER_3_4" xml:space="preserve">
+        <value>三拍子</value>
+    </data>
+    <data name="METER_4_4" xml:space="preserve">
+        <value>四拍子</value>
+    </data>
+    <data name="LABEL_ELAPSED" xml:space="preserve">
+        <value>経過時間</value>
+    </data>
+    <data name="LABEL_BEAT_COUNT" xml:space="preserve">
+        <value>ビート回数</value>
+    </data>
+    <data name="LABEL_AVERAGE" xml:space="preserve">
+        <value>平均（10/15/20）:</value>
+    </data>
+    <data name="LABEL_BEAT_LAST" xml:space="preserve">
+        <value>前回:</value>
+    </data>
+    <data name="LABEL_BEAT_AVERAGE" xml:space="preserve">
+        <value>平均:</value>
+    </data>
+    <data name="LABEL_BEAT_BPM_INTERVAL" xml:space="preserve">
+        <value>BPM間隔:</value>
+    </data>
+    <data name="TEXT_WARNING_ACCURACY" xml:space="preserve">
+        <value>様々な原因により、計測は不正確になる可能性があります。高い精度が要求される場合には使用しないで下さい。本ソフトウェアの開発者は使用により生じる不都合や損害に関して責任を負いません。</value>
+    </data>
+    <data name="LOCATION_HELP" xml:space="preserve">
+        <value>https://github.com/hsaito/HSTempoWasm/blob/develop/HELP.md</value>
+    </data>
+    <data name="LOCATION_CHANGELOG" xml:space="preserve">
+        <value>https://github.com/hsaito/HSTempoWasm/blob/develop/CHANGELOG.md</value>
+    </data>
+    <data name="TEXT_CHANGELOG" xml:space="preserve">
+        <value>更新履歴</value>
+    </data>
+    <data name="TEXT_HELP_HOWTO" xml:space="preserve">
+        <value>使い方はヘルプファイルをご覧ください。</value>
+    </data>
+    <data name="MENU_HOME" xml:space="preserve">
+        <value>ホーム</value>
+    </data>
+    <data name="MENU_HELP" xml:space="preserve">
+        <value>ヘルプ</value>
+    </data>
+    <data name="MENU_ABOUT" xml:space="preserve">
+        <value>バージョン情報</value>
+    </data>
+</root>

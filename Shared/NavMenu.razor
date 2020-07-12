@@ -1,4 +1,5 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
+﻿@using HSTempoWasm.i10n
+<div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">HSTempoWasm</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
@@ -9,7 +10,7 @@
     <ul class="nav flex-column">
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
+                <span class="oi oi-home" aria-hidden="true"></span> @Messages.MENU_HOME
             </NavLink>
         </li>
     </ul>
@@ -17,7 +18,7 @@
     <ul class="nav flex-column">
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="help" Match="NavLinkMatch.All">
-                <span class="oi oi-question-mark" aria-hidden="true"></span> Help
+                <span class="oi oi-question-mark" aria-hidden="true"></span> @Messages.MENU_HELP
             </NavLink>
         </li>
     </ul>
@@ -25,7 +26,7 @@
     <ul class="nav flex-column">
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="about" Match="NavLinkMatch.All">
-                <span class="oi oi-info" aria-hidden="true"></span> About
+                <span class="oi oi-info" aria-hidden="true"></span> @Messages.MENU_ABOUT
             </NavLink>
         </li>
     </ul>
