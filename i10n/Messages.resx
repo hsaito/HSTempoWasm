@@ -88,7 +88,7 @@
         <value>https://github.com/hsaito/HSTempoWasm/blob/develop/CHANGELOG.md</value>
     </data>
     <data name="TEXT_CHANGELOG" xml:space="preserve">
-        <value>更新履歴</value>
+        <value>Changelog</value>
     </data>
     <data name="TEXT_HELP_HOWTO" xml:space="preserve">
         <value>Please refer to the help  for more information.</value>
