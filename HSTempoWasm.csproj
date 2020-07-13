@@ -9,9 +9,9 @@
     <PackageId>HSTempoWasm</PackageId>
     <Description>HSTempo WebAssembly Edition</Description>
     <Copyright>Copyright (c) 2020 Hideki Saito</Copyright>
-    <Version>1.6.1.1</Version>
-    <AssemblyVersion>1.6.1.1</AssemblyVersion>
-    <FileVersion>1.6.1.1</FileVersion>
+    <Version>1.6.1.2</Version>
+    <AssemblyVersion>1.6.1.2</AssemblyVersion>
+    <FileVersion>1.6.1.2</FileVersion>
 	<ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
   </PropertyGroup>
 
