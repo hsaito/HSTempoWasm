@@ -82,10 +82,10 @@
         <value>Various factors may affect accuracy of the measurement. Do not rely on this system for mission critical applications. The HSTempoWasm developers are not responsible for any damages caused by use of this system.</value>
     </data>
     <data name="LOCATION_HELP" xml:space="preserve">
-        <value>https://github.com/hsaito/HSTempoWasm/blob/develop/HELP.md</value>
+        <value>https://github.com/hsaito/HSTempoWasm/blob/master/HELP.md</value>
     </data>
     <data name="LOCATION_CHANGELOG" xml:space="preserve">
-        <value>https://github.com/hsaito/HSTempoWasm/blob/develop/CHANGELOG.md</value>
+        <value>https://github.com/hsaito/HSTempoWasm/blob/master/CHANGELOG.md</value>
     </data>
     <data name="TEXT_CHANGELOG" xml:space="preserve">
         <value>Changelog</value>
