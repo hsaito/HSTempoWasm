@@ -75,10 +75,10 @@
         <value>様々な原因により、計測は不正確になる可能性があります。高い精度が要求される場合には使用しないで下さい。本ソフトウェアの開発者は使用により生じる不都合や損害に関して責任を負いません。</value>
     </data>
     <data name="LOCATION_HELP" xml:space="preserve">
-        <value>https://github.com/hsaito/HSTempoWasm/blob/develop/HELP.md</value>
+        <value>https://github.com/hsaito/HSTempoWasm/blob/master/HELP.md</value>
     </data>
     <data name="LOCATION_CHANGELOG" xml:space="preserve">
-        <value>https://github.com/hsaito/HSTempoWasm/blob/develop/CHANGELOG.md</value>
+        <value>https://github.com/hsaito/HSTempoWasm/blob/master/CHANGELOG.md</value>
     </data>
     <data name="TEXT_CHANGELOG" xml:space="preserve">
         <value>更新履歴</value>
