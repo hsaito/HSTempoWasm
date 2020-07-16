@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.6.2.0 (2020-07-15)
+-   Blazor library update to 3.2.1.
+
 ## 1.6.1.2 (2020-07-12)
 
 -   Fixed some localization issues.
