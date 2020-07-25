@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.6.2.1 (2020-07-24)
+-   Fixed case conflict
+
 ## 1.6.2.0 (2020-07-15)
 -   Blazor library update to 3.2.1.
 
