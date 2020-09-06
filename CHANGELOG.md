@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.6.2.2 (2020-09-06)
+-   Updated libraries
+
 ## 1.6.2.1 (2020-07-24)
 -   Fixed case conflict
 
