@@ -4,7 +4,7 @@ This repository contains a source code from HSTempoWasm, a Blazor WebAssembly in
 
 ## Prerequisite
 
-- [.NET Core SDK 3.1.300](https://dotnet.microsoft.com/download/dotnet-core/3.1) or later supporting [Blazor](https://blazor.net)
+- [.NET Core SDK 5.0.100](https://dotnet.microsoft.com/download/dotnet/5.0) or later supporting [Blazor](https://blazor.net)
 
 ## Using HSTempoWasm
 
