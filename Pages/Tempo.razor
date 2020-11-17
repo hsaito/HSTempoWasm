@@ -88,7 +88,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm">
-                        <button class="btn btn-primary" id="beatButton" style="padding-top: 1.5em; padding-bottom: 1.5em; width: 100%;" ontouch="ExecBeat" @onclick="ExecBeat">@Messages.BUTTON_BEAT</button>
+                        <button class="btn btn-primary" @ref="beatButton" id="beatButton" style="padding-top: 1.5em; padding-bottom: 1.5em; width: 100%;" ontouch="ExecBeat" @onclick="ExecBeat">@Messages.BUTTON_BEAT</button>
                     </div>
                     <div class="col-sm">
                         <button class="btn btn-danger" id="resetButton" style="padding-top: 1.5em; padding-bottom: 1.5em; width: 100%;" ontouch="Reset" @onclick="Reset">@Messages.BUTTON_RESET</button>
