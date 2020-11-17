@@ -47,17 +47,25 @@ namespace HSTempoWasm.Pages
         private string meterBoxMode = "VBI";
         private int meterBoxModeNumeric = 1;
 
+        private ElementReference beatButton;
+
         [Inject] public IDispatcher Dispatcher { get; set; }
         [Inject] private IState<AudibleState> AudibleState { get; set; }
         [Inject] private IState<VBIState> VBIState { get; set; }
 
         double stability = 0;
 
-        protected override void OnAfterRender(bool firstRender)
+
+        private async Task InitializeFocus()
+        {
+            await beatButton.FocusAsync();
+        }
+
+    protected override void OnAfterRender(bool firstRender)
         {
             if (firstRender)
             {
-                JSRuntime.InvokeVoidAsync("setFocus", "beatButton");
+                InitializeFocus();
             }
         }
 
@@ -135,7 +143,7 @@ namespace HSTempoWasm.Pages
                 case "b":
                 case "B":
                 {
-                    JSRuntime.InvokeVoidAsync("setFocus", "beatButton");
+                    InitializeFocus().Wait();
                     break;
                 }
 
@@ -359,7 +367,7 @@ namespace HSTempoWasm.Pages
             Timers.VdiTock.Enabled = true;
         }
 
-        private void Reset()
+        private async Task Reset()
         {
             StopTimer();
 
@@ -383,12 +391,11 @@ namespace HSTempoWasm.Pages
             averageMS = 0;
             bpmInterval = 0;
 
-            JSRuntime.InvokeVoidAsync("setFocus", "beatButton");
-
             stability = 0;
             bpmAverage10 = "X";
             bpmAverage15 = "X";
             bpmAverage20 = "X";
+            await beatButton.FocusAsync();
         }
 
         private void StartTimer()

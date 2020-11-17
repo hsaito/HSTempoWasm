@@ -69,15 +69,6 @@
 
 <body>
 <script>
-    window.setFocus = (id) => {
-        var element = document.getElementById(id);
-        element.focus();
-        setTimeout(function () {
-            element.focus();
-        }, 1);
-    };
-</script>
-<script>
     window.playBeat = () => {
         audio = new Audio('/sounds/beat.mp3');
         audio.play();

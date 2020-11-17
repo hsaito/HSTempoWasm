@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.7.0.2 (2020-11-16)
+-   Some .NET 5 related improvements
+
 ## 1.7.0.1 (2020-11-10)
 -	Housekeeping update
 
