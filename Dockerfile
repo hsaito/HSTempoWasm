@@ -9,7 +9,7 @@ COPY . ./aspnetapp/
 
 WORKDIR /source/aspnetapp
 RUN dotnet workload install wasm-tools
-RUN dotnet publish -c Release -o /app
+RUN dotnet publish -c Debug -o /app
 
 # final stage/image
 FROM nginx:latest
