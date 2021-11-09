@@ -9,14 +9,18 @@
     <PackageId>HSTempoWasm</PackageId>
     <Description>HSTempo WebAssembly Edition</Description>
     <Copyright>Copyright (c) 2020 Hideki Saito</Copyright>
-    <Version>1.8.0.0</Version>
-    <AssemblyVersion>1.8.0.0</AssemblyVersion>
-    <FileVersion>1.8.0.0</FileVersion>
+    <Version>1.8.1.0</Version>
+    <AssemblyVersion>1.8.1.0</AssemblyVersion>
+    <FileVersion>1.8.1.0</FileVersion>
 	<ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
 	<LangVersion>latest</LangVersion>
 	<Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <RunAOTCompilation>true</RunAOTCompilation>
+  </PropertyGroup>
+    
   <ItemGroup>
     <PackageReference Include="Fluxor.Blazor.Web" Version="4.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0" />
