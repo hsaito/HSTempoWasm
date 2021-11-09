@@ -8,6 +8,7 @@ COPY *.csproj ./aspnetapp/
 COPY . ./aspnetapp/
 
 WORKDIR /source/aspnetapp
+RUN dotnet workload install wasm-tools
 RUN dotnet publish -c Release -o /app
 
 # final stage/image
