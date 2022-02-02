@@ -52,7 +52,7 @@ namespace HSTempoWasm
                 .SetMinimumLevel(LogLevel.Information)
             );
             var currentAssembly = typeof(Program).Assembly;
-            builder.Services.AddFluxor(options => options.ScanAssemblies(currentAssembly));
+            builder.Services.AddFluxor(options => options.ScanAssemblies(currentAssembly).UseReduxDevTools(rdt => rdt.Name = "HSTempoWasm"));
             
             await builder.Build().RunAsync();
         }
