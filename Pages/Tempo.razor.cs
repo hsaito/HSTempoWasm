@@ -441,8 +441,6 @@ namespace HSTempoWasm.Pages
         {
             meterBoxMode = (string) arg.Value;
 
-            //Console.Out.WriteLine(meterBoxMode);
-
             meterBoxModeNumeric = meterBoxMode switch
             {
                 "VBI" => 1,
