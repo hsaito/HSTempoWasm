@@ -102,4 +102,7 @@
     <data name="MENU_ABOUT" xml:space="preserve">
         <value>About</value>
     </data>
+    <data name="LABEL_JITTER" xml:space="preserve">
+        <value>Jitter</value>
+    </data>
 </root>

@@ -18,7 +18,8 @@
                                 <button type="button" class="@vbi4">4</button>
                             </span>
 
-                            <select class="custom-select" value="@meterBoxMode" @onchange="@HandleMeterUpdate" id="MeterBoxSelect">
+                            <select class="custom-select" value="@meterBoxMode" @onchange="@HandleMeterUpdate"
+                                id="MeterBoxSelect">
                                 <option value="VBI" selected>VBI</option>
                                 <option value="2/4">2/4</option>
                                 <option value="3/4">3/4</option>
@@ -37,88 +38,98 @@
                             <div class="col-sm">
                                 @Messages.LABEL_AVERAGE @bpmAverage10 / @bpmAverage15 / @bpmAverage20
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-body">
-                    <p>@Messages.LABEL_BPM @currentBPM</p>
-
-                    <div class="container" style="font-size: small;">
-                        <div class="row">
                             <div class="col-sm">
-                                <button class="btn btn-outline-secondary" @onclick="AdjustUp">@Messages.BUTTON_ADJUST_UP</button>
-                                <button class="btn btn-outline-secondary" @onclick="AdjustDown">@Messages.BUTTON_ADJUST_DOWN</button>
-                                <button class="btn btn-outline-secondary" @onclick="Rebase">@Messages.BUTTON_REBASE</button>
-                            </div>
-                            <div class="col-sm">
-                                <audio
-                                    preload="auto"
-                                    src="/sounds/beat.mp3">
-                                    Your browser does not support the
-                                    <code>audio</code> element.
-                                </audio>
-                                <input type="checkbox" checked="@AudibleState.Value.Audible" @onclick="@ToggleAudibleCheck" class="form-check-input" id="audibleBeat"> @Messages.LABEL_AUDIBLE_BEAT
-                            </div>
-                            <div class="col-sm">
-                                <button class="btn btn-outline-secondary" onclick="playBeat()">@Messages.BUTTON_TEST_BEAT</button>
-                                <button class="btn btn-outline-secondary" @onclick="DownloadJson">@Messages.BUTTON_DOWNLOAD_METRIC</button>
+                                @Messages.LABEL_JITTER @jitter
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="card">
-        <div class="card-body">
-            @Messages.LABEL_STABILITY
-            <div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: @stability%" aria-valuenow="@stability" aria-valuemin="0" aria-valuemax="100"></div>
+<div class="card">
+    <div class="card-body">
+        <p>@Messages.LABEL_BPM @currentBPM</p>
+
+        <div class="container" style="font-size: small;">
+            <div class="row">
+                <div class="col-sm">
+                    <button class="btn btn-outline-secondary" @onclick="AdjustUp">@Messages.BUTTON_ADJUST_UP</button>
+                    <button class="btn btn-outline-secondary"
+                        @onclick="AdjustDown">@Messages.BUTTON_ADJUST_DOWN</button>
+                    <button class="btn btn-outline-secondary" @onclick="Rebase">@Messages.BUTTON_REBASE</button>
+                </div>
+                <div class="col-sm">
+                    <audio preload="auto" src="/sounds/beat.mp3">
+                        Your browser does not support the
+                        <code>audio</code> element.
+                    </audio>
+                    <input type="checkbox" checked="@AudibleState.Value.Audible" @onclick="@ToggleAudibleCheck"
+                        class="form-check-input" id="audibleBeat"> @Messages.LABEL_AUDIBLE_BEAT
+                </div>
+                <div class="col-sm">
+                    <button class="btn btn-outline-secondary" onclick="playBeat()">@Messages.BUTTON_TEST_BEAT</button>
+                    <button class="btn btn-outline-secondary"
+                        @onclick="DownloadJson">@Messages.BUTTON_DOWNLOAD_METRIC</button>
+                </div>
             </div>
+
         </div>
     </div>
+</div>
 
-    <div class="card">
-        <div class="card-body">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm">
-                        <button class="btn btn-primary" @ref="beatButton" id="beatButton" style="padding-top: 1.5em; padding-bottom: 1.5em; width: 100%;" ontouch="ExecBeat" @onclick="ExecBeat">@Messages.BUTTON_BEAT</button>
-                    </div>
-                    <div class="col-sm">
-                        <button class="btn btn-danger" id="resetButton" style="padding-top: 1.5em; padding-bottom: 1.5em; width: 100%;" ontouch="Reset" @onclick="Reset">@Messages.BUTTON_RESET</button>
-                    </div>
+<div class="card">
+    <div class="card-body">
+        @Messages.LABEL_STABILITY
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: @stability%" aria-valuenow="@stability"
+                aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm">
+                    <button class="btn btn-primary" @ref="beatButton" id="beatButton"
+                        style="padding-top: 1.5em; padding-bottom: 1.5em; width: 100%;" ontouch="ExecBeat"
+                        @onclick="ExecBeat">@Messages.BUTTON_BEAT</button>
+                </div>
+                <div class="col-sm">
+                    <button class="btn btn-danger" id="resetButton"
+                        style="padding-top: 1.5em; padding-bottom: 1.5em; width: 100%;" ontouch="Reset"
+                        @onclick="Reset">@Messages.BUTTON_RESET</button>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="card">
-        <div class="card-body">
-            <div class="container" style="font-size: small;">
-                <div class="row">
-                    <div class="col-sm">
-                        @Messages.LABEL_BEAT_LAST @recentTimeMs ms
-                    </div>
-                    <div class="col-sm">
-                        @Messages.LABEL_BEAT_AVERAGE @averageMS ms
-                    </div>
-                    <div class="col-sm">
-                        @Messages.LABEL_BEAT_BPM_INTERVAL @bpmInterval ms
-                    </div>
+<div class="card">
+    <div class="card-body">
+        <div class="container" style="font-size: small;">
+            <div class="row">
+                <div class="col-sm">
+                    @Messages.LABEL_BEAT_LAST @recentTimeMs ms
+                </div>
+                <div class="col-sm">
+                    @Messages.LABEL_BEAT_AVERAGE @averageMS ms
+                </div>
+                <div class="col-sm">
+                    @Messages.LABEL_BEAT_BPM_INTERVAL @bpmInterval ms
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="card">
-        <div class="card-body">
-            <p class="card-text" style="font-size: x-small;"><span class="oi oi-warning"/> @Messages.TEXT_WARNING_ACCURACY</p>
-        </div>
+<div class="card">
+    <div class="card-body">
+        <p class="card-text" style="font-size: x-small;"><span class="oi oi-warning" /> @Messages.TEXT_WARNING_ACCURACY
+        </p>
     </div>
 </div>
