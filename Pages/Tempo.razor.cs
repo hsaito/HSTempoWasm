@@ -396,6 +396,7 @@ namespace HSTempoWasm.Pages
             currentCount = 0;
             averageMS = 0;
             bpmInterval = 0;
+            jitter = 0;
 
             stability = 0;
             bpmAverage10 = "X";
