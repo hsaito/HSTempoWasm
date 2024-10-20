@@ -35,6 +35,7 @@ namespace HSTempoWasm.Pages
 
         int averageMS = 0;
         int bpmInterval = 0;
+        int jitter = 0;
 
         private const string vbiInactiveStyle = "btn btn-dark";
         private const string vbiActiveStyle = "btn btn-success";
@@ -170,6 +171,7 @@ namespace HSTempoWasm.Pages
             [JsonPropertyName("count")] public int Count { get; set; }
             [JsonPropertyName("measured_bpm")] public int MeasuredBpm { get; set; }
             [JsonPropertyName("ms")] public int Ms { get; set; }
+            [JsonPropertyName("jitter")] public int Jitter { get; set; }
         }
 
         private class Record
@@ -204,6 +206,8 @@ namespace HSTempoWasm.Pages
                 Timers.VdiTick.Enabled = true;
                 bpmInterval = CalculateBPMtoMS();
                 averageMS = (int) (accumulatedMs.TotalMilliseconds / currentCount);
+                // Calculate jitter
+                jitter = (int) Math.Abs(averageMS - bpmInterval);
 
                 bpmValue10[bpmPoint10] = currentBPM;
                 bpmPoint10++;
@@ -245,12 +249,14 @@ namespace HSTempoWasm.Pages
 
                 _sessionRecord.AverageBpm = (int) currentBPM;
                 _sessionRecord.AverageMs = (int) averageMS;
+
                 var newMetric = new MetricInfo
                 {
                     MeasuredBpm = (int) currentBPM,
                     Count = (int) currentCount,
                     Elapsed = new TimeSpan(0, 0, elapsedSecond),
-                    Ms = (int) recentTimeMs
+                    Ms = (int) recentTimeMs,
+                    Jitter = (int) jitter
                 };
 
                 _sessionRecord.Metric.Add(newMetric);
@@ -390,6 +396,7 @@ namespace HSTempoWasm.Pages
             currentCount = 0;
             averageMS = 0;
             bpmInterval = 0;
+            jitter = 0;
 
             stability = 0;
             bpmAverage10 = "X";

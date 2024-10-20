@@ -102,4 +102,7 @@
     <data name="MENU_ABOUT" xml:space="preserve">
         <value>バージョン情報</value>
     </data>
+    <data name="LABEL_JITTER" xml:space="preserve">
+        <value>ジッター</value>
+    </data>
 </root>
