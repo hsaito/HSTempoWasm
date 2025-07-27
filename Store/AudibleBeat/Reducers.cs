@@ -6,16 +6,16 @@ namespace HSTempoWasm.Store.AudibleBeat
     public class AudibleBeatReducers
     {
         [ReducerMethod]
-        public static AudibleState ResetAudibleState(AudibleState state, ResetAudible action)
+        public AudibleState ResetAudibleState(AudibleState state, ResetAudible action)
         {
-            // Reset AudibleBeat state to default (false)
+            // Reset state to default (false)
             return new AudibleState(false);
         }
         
         [ReducerMethod]
-        public static AudibleState ToggleAudibleState(AudibleState state, ToggleAudible action)
+        public AudibleState ToggleAudibleState(AudibleState state, ToggleAudible action)
         {
-            // Toggle AudibleBeat state
+            // Toggle state
             return new AudibleState(!state.Audible);
         }
     }
