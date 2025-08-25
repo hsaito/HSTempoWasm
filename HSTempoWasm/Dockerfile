@@ -12,7 +12,7 @@ RUN dotnet workload install wasm-tools
 RUN dotnet publish -c Debug -o /app
 
 # final stage/image
-FROM nginx:latest
+FROM nginx:1.29.1-alpine3.22-slim
 WORKDIR /usr/share/nginx/html
 #RUN rm -rf *
 COPY --from=build /app/wwwroot ./
