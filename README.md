@@ -1,10 +1,10 @@
 # HSTempoWasm
 
-This repository contains a source code from HSTempoWasm, a Blazor WebAssembly interval/tempo finder.
+This repository contains the source code for HSTempoWasm, a Blazor WebAssembly interval/tempo finder.
 
 ## Prerequisite
 
-- [.NET Core SDK 5.0.100](https://dotnet.microsoft.com/download/dotnet/5.0) or later supporting [Blazor](https://blazor.net)
+- [.NET SDK 9.0.100](https://dotnet.microsoft.com/download/dotnet/9.0) or later supporting [Blazor](https://blazor.net)
 
 ## Using HSTempoWasm
 
@@ -14,14 +14,22 @@ The official instance of this application can be found at [https://hstempo.hidek
 
 ## Running the Code
 
-Run with the following.
+Run with the following:
 
 ```
-dotnet run
+dotnet run --project HSTempoWasm/HSTempoWasm.csproj
 ```
 
-Also a [Dockerfile](Dockerfile) is provided as well for running this as a container.
+A [Dockerfile](HSTempoWasm/Dockerfile) is provided for running this as a container.
+
+## Running Unit Tests
+
+Unit tests are located in the `HSTempoWasm.Tests` project. To run all tests:
+
+```
+dotnet test HSTempoWasm.Tests/HSTempoWasm.Tests.csproj
+```
 
 ## License
 
-This repository is licensed with the [MIT](LICENSE) license.
+This repository is licensed under the [MIT](LICENSE) license.
