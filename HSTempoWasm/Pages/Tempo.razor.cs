@@ -10,59 +10,69 @@ using HSTempoWasm.Store.AudibleBeat;
 using HSTempoWasm.Store.VBI;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 
 namespace HSTempoWasm.Pages
 {
     public partial class Tempo
     {
-        private int currentCount = 0;
-        private double currentBPM = 0;
-        private int elapsedSecond = 0;
+        // Fields (no redundant initialization)
+        private int currentCount;
+        private int elapsedSecond;
+        private double currentBpm;
+        private int averageMs;
 
-        double[] bpmValue10 = new double[10];
-        double[] bpmValue15 = new double[15];
-        double[] bpmValue20 = new double[20];
+        // Constants for BPM array sizes
+        private const int BpmArraySize10 = 10;
+        private const int BpmArraySize15 = 15;
+        private const int BpmArraySize20 = 20;
 
-        string bpmAverage10 = "X";
-        string bpmAverage15 = "X";
-        string bpmAverage20 = "X";
+        // BPM values and averages
+        private double[] bpmValues10 = new double[BpmArraySize10];
+        private double[] bpmValues15 = new double[BpmArraySize15];
+        private double[] bpmValues20 = new double[BpmArraySize20];
 
-        int bpmPoint10 = 0;
-        int bpmPoint15 = 0;
-        int bpmPoint20 = 0;
+        private string bpmAverage10 = "X";
+        private string bpmAverage15 = "X";
+        private string bpmAverage20 = "X";
 
-        int averageMS = 0;
-        int bpmInterval = 0;
-        int jitter = 0;
+        private int bpmIndex10;
+        private int bpmIndex15;
+        private int bpmIndex20;
 
-        private const string vbiInactiveStyle = "btn btn-dark";
-        private const string vbiActiveStyle = "btn btn-success";
+        // Timing and calculation fields
+        private int bpmInterval;
+        private int jitter;
+        private double stability;
 
+        // Styles
+        private const string VbiInactiveStyle = "btn btn-dark";
+        private const string VbiActiveStyle = "btn btn-success";
+
+        // Time tracking
         private DateTime currentTime;
         private DateTime startTime;
         private DateTime lastTime;
         private double recentTimeMs;
 
+        // Meter mode
         private string meterBoxMode = "VBI";
         private int meterBoxModeNumeric = 1;
 
+        // UI references
         private ElementReference beatButton;
 
-        [Inject] public IDispatcher Dispatcher { get; set; }
-        [Inject] private IState<AudibleState> AudibleState { get; set; }
-        [Inject] private IState<VBIState> VBIState { get; set; }
-
-        double stability = 0;
-
+        // State injection (nullable for safety)
+        [Inject] public IDispatcher? Dispatcher { get; set; }
+        [Inject] private IState<AudibleState>? AudibleState { get; set; }
+        [Inject] private IState<VBIState>? VbiState { get; set; }
 
         private async Task InitializeFocus()
         {
             await beatButton.FocusAsync();
         }
 
-    protected override void OnAfterRender(bool firstRender)
+        protected override void OnAfterRender(bool firstRender)
         {
             if (firstRender)
             {
@@ -70,10 +80,10 @@ namespace HSTempoWasm.Pages
             }
         }
 
-        private string vbi1 = vbiInactiveStyle;
-        private string vbi2 = vbiInactiveStyle;
-        private string vbi3 = vbiInactiveStyle;
-        private string vbi4 = vbiInactiveStyle;
+        private string vbi1 = VbiInactiveStyle;
+        private string vbi2 = VbiInactiveStyle;
+        private string vbi3 = VbiInactiveStyle;
+        private string vbi4 = VbiInactiveStyle;
 
         void UpdateVbi(int mode)
         {
@@ -81,70 +91,71 @@ namespace HSTempoWasm.Pages
             {
                 case 0:
                 {
-                    vbi1 = vbiInactiveStyle;
-                    vbi2 = vbiInactiveStyle;
-                    vbi3 = vbiInactiveStyle;
-                    vbi4 = vbiInactiveStyle;
+                    vbi1 = VbiInactiveStyle;
+                    vbi2 = VbiInactiveStyle;
+                    vbi3 = VbiInactiveStyle;
+                    vbi4 = VbiInactiveStyle;
                     break;
                 }
                 case 1:
                 {
-                    vbi1 = vbiActiveStyle;
-                    vbi2 = vbiInactiveStyle;
-                    vbi3 = vbiInactiveStyle;
-                    vbi4 = vbiInactiveStyle;
+                    vbi1 = VbiActiveStyle;
+                    vbi2 = VbiInactiveStyle;
+                    vbi3 = VbiInactiveStyle;
+                    vbi4 = VbiInactiveStyle;
                     break;
                 }
                 case 2:
                 {
-                    vbi1 = vbiInactiveStyle;
-                    vbi2 = vbiActiveStyle;
-                    vbi3 = vbiInactiveStyle;
-                    vbi4 = vbiInactiveStyle;
+                    vbi1 = VbiInactiveStyle;
+                    vbi2 = VbiActiveStyle;
+                    vbi3 = VbiInactiveStyle;
+                    vbi4 = VbiInactiveStyle;
                     break;
                 }
                 case 3:
                 {
-                    vbi1 = vbiInactiveStyle;
-                    vbi2 = vbiInactiveStyle;
-                    vbi3 = vbiActiveStyle;
-                    vbi4 = vbiInactiveStyle;
+                    vbi1 = VbiInactiveStyle;
+                    vbi2 = VbiInactiveStyle;
+                    vbi3 = VbiActiveStyle;
+                    vbi4 = VbiInactiveStyle;
                     break;
                 }
                 case 4:
                 {
-                    vbi1 = vbiInactiveStyle;
-                    vbi2 = vbiInactiveStyle;
-                    vbi3 = vbiInactiveStyle;
-                    vbi4 = vbiActiveStyle;
+                    vbi1 = VbiInactiveStyle;
+                    vbi2 = VbiInactiveStyle;
+                    vbi3 = VbiInactiveStyle;
+                    vbi4 = VbiActiveStyle;
                     break;
                 }
                 case 5:
                 {
-                    vbi1 = vbiActiveStyle;
-                    vbi2 = vbiActiveStyle;
-                    vbi3 = vbiActiveStyle;
-                    vbi4 = vbiActiveStyle;
+                    vbi1 = VbiActiveStyle;
+                    vbi2 = VbiActiveStyle;
+                    vbi3 = VbiActiveStyle;
+                    vbi4 = VbiActiveStyle;
                     break;
                 }
             }
         }
 
-        void GetKeyPress(KeyboardEventArgs e)
+        // Fix GetKeyPress to async
+        async void GetKeyPress(KeyboardEventArgs e)
         {
             switch (e.Key)
             {
                 case "r":
                 case "R":
                 {
-                    Reset();
+                    await Reset();
                     break;
                 }
 
                 case "b":
                 case "B":
                 {
-                    InitializeFocus().Wait();
+                    await InitializeFocus();
                     break;
                 }
 
@@ -181,19 +192,19 @@ namespace HSTempoWasm.Pages
             [JsonPropertyName("metric")] public List<MetricInfo> Metric { get; set; }
         }
 
-        private Record _sessionRecord = null;
+        private Record? sessionRecord;
 
         private void ExecBeat()
         {
             currentTime = DateTime.Now;
             var accumulatedMs = currentTime - startTime;
-            currentBPM = Math.Round((currentCount / accumulatedMs.TotalMilliseconds) * 60000);
+            currentBpm = Math.Round((currentCount / accumulatedMs.TotalMilliseconds) * 60000);
             currentCount++;
 
             if (Timers.BeatTimer == null || Timers.BeatTimer.Enabled != true)
             {
-                _sessionRecord = new Record();
-                _sessionRecord.Metric = new List<MetricInfo>();
+                sessionRecord = new Record();
+                sessionRecord.Metric = new List<MetricInfo>();
                 StartTimer();
             }
 
@@ -201,65 +212,65 @@ namespace HSTempoWasm.Pages
             {
                 recentTimeMs = UpdateRecentTime().TotalMilliseconds;
                 Timers.VdiTock.Enabled = false;
-                Timers.VdiTick.Interval = 60000 / currentBPM;
-                Timers.VdiTock.Interval = 60000 / currentBPM / 3;
+                Timers.VdiTick.Interval = 60000 / currentBpm;
+                Timers.VdiTock.Interval = 60000 / currentBpm / 3;
                 Timers.VdiTick.Enabled = true;
                 bpmInterval = CalculateBPMtoMS();
-                averageMS = (int) (accumulatedMs.TotalMilliseconds / currentCount);
+                averageMs = (int) (accumulatedMs.TotalMilliseconds / currentCount);
                 // Calculate jitter
-                jitter = (int) Math.Abs(averageMS - bpmInterval);
+                jitter = (int) Math.Abs(averageMs - bpmInterval);
 
-                bpmValue10[bpmPoint10] = currentBPM;
-                bpmPoint10++;
-                if (bpmPoint10 > 9)
-                    bpmPoint10 = 0;
+                bpmValues10[bpmIndex10] = currentBpm;
+                bpmIndex10++;
+                if (bpmIndex10 > BpmArraySize10 - 1)
+                    bpmIndex10 = 0;
 
-                bpmValue15[bpmPoint15] = currentBPM;
-                bpmPoint15++;
-                if (bpmPoint15 > 14)
-                    bpmPoint15 = 0;
+                bpmValues15[bpmIndex15] = currentBpm;
+                bpmIndex15++;
+                if (bpmIndex15 > BpmArraySize15 - 1)
+                    bpmIndex15 = 0;
 
-                bpmValue20[bpmPoint20] = currentBPM;
-                bpmPoint20++;
-                if (bpmPoint20 > 19)
-                    bpmPoint20 = 0;
+                bpmValues20[bpmIndex20] = currentBpm;
+                bpmIndex20++;
+                if (bpmIndex20 > BpmArraySize20 - 1)
+                    bpmIndex20 = 0;
 
                 double bpmAverageValue10 = 0, bpmAverageValue15 = 0, bpmAverageValue20 = 0;
 
-                if (currentCount > 10)
+                if (currentCount > BpmArraySize10)
                 {
-                    bpmAverageValue10 = Math.Round(bpmValue10.Sum() / 10);
+                    bpmAverageValue10 = Math.Round(bpmValues10.Sum() / BpmArraySize10);
                     bpmAverage10 = bpmAverageValue10.ToString();
                 }
 
-                if (currentCount > 15)
+                if (currentCount > BpmArraySize15)
                 {
-                    bpmAverageValue15 = Math.Round(bpmValue15.Sum() / 15);
+                    bpmAverageValue15 = Math.Round(bpmValues15.Sum() / BpmArraySize15);
                     bpmAverage15 = bpmAverageValue15.ToString();
                 }
 
-                if (currentCount > 20)
+                if (currentCount > BpmArraySize20)
                 {
-                    bpmAverageValue20 = Math.Round(bpmValue20.Sum() / 20);
+                    bpmAverageValue20 = Math.Round(bpmValues20.Sum() / BpmArraySize20);
                     bpmAverage20 = bpmAverageValue20.ToString();
-                    stability = (20 - Math.Abs(currentBPM -
+                    stability = (20 - Math.Abs(currentBpm -
                                                (bpmAverageValue10 + bpmAverageValue15 + bpmAverageValue20) / 3)) / 20 *
                                 100;
                 }
 
-                _sessionRecord.AverageBpm = (int) currentBPM;
-                _sessionRecord.AverageMs = (int) averageMS;
+                sessionRecord.AverageBpm = (int) currentBpm;
+                sessionRecord.AverageMs = (int) averageMs;
 
                 var newMetric = new MetricInfo
                 {
-                    MeasuredBpm = (int) currentBPM,
+                    MeasuredBpm = (int) currentBpm,
                     Count = (int) currentCount,
                     Elapsed = new TimeSpan(0, 0, elapsedSecond),
                     Ms = (int) recentTimeMs,
                     Jitter = (int) jitter
                 };
 
-                _sessionRecord.Metric.Add(newMetric);
+                sessionRecord.Metric.Add(newMetric);
             }
             else
             {
@@ -272,12 +283,12 @@ namespace HSTempoWasm.Pages
 
             lastTime = currentTime;
             Dispatcher.Dispatch(new VBIResetAction());
-            UpdateVbi(VBIState.Value.VBIStateNumber);
+            UpdateVbi(VbiState.Value.VBIStateNumber);
         }
 
         private short CalculateBPMtoMS()
         {
-            return currentBPM <= 0 ? (short) 0 : Convert.ToInt16(Math.Round(60000 / currentBPM));
+            return currentBpm <= 0 ? (short) 0 : Convert.ToInt16(Math.Round(60000 / currentBpm));
         }
 
 
@@ -293,7 +304,7 @@ namespace HSTempoWasm.Pages
 
         private string GenerateMetricJson()
         {
-            return _sessionRecord != null ? JsonSerializer.Serialize(_sessionRecord) : null;
+            return sessionRecord != null ? JsonSerializer.Serialize(sessionRecord) : null;
         }
 
         public async static Task SaveAs(IJSRuntime js, string filename, byte[] data)
@@ -306,10 +317,10 @@ namespace HSTempoWasm.Pages
 
         private void Rebase()
         {
-            if (Timers.BeatTimer != null && Timers.BeatTimer.Enabled && currentBPM > 0)
+            if (Timers.BeatTimer != null && Timers.BeatTimer.Enabled && currentBpm > 0)
             {
                 Dispatcher.Dispatch(new VBIResetAction());
-                UpdateVbi(VBIState.Value.VBIStateNumber);
+                UpdateVbi(VbiState.Value.VBIStateNumber);
                 Timers.VdiTick.Enabled = false;
                 Timers.VdiTock.Enabled = false;
                 Timers.VdiTick.Enabled = true;
@@ -318,13 +329,13 @@ namespace HSTempoWasm.Pages
 
         private void AdjustUp()
         {
-            if (Timers.BeatTimer != null && Timers.BeatTimer.Enabled && currentBPM > 0)
+            if (Timers.BeatTimer != null && Timers.BeatTimer.Enabled && currentBpm > 0)
             {
                 Timers.VdiTick.Enabled = false;
                 Timers.VdiTock.Enabled = false;
-                currentBPM++;
-                Timers.VdiTick.Interval = 60000 / currentBPM;
-                Timers.VdiTock.Interval = 60000 / currentBPM / 3;
+                currentBpm++;
+                Timers.VdiTick.Interval = 60000 / currentBpm;
+                Timers.VdiTock.Interval = 60000 / currentBpm / 3;
                 Timers.VdiTick.Enabled = true;
                 bpmInterval = CalculateBPMtoMS();
             }
@@ -332,21 +343,22 @@ namespace HSTempoWasm.Pages
 
         private void AdjustDown()
         {
-            if (Timers.BeatTimer == null || !Timers.BeatTimer.Enabled || !(currentBPM > 0)) return;
+            if (Timers.BeatTimer == null || !Timers.BeatTimer.Enabled || !(currentBpm > 0)) return;
             Timers.VdiTick.Enabled = false;
             Timers.VdiTock.Enabled = false;
-            currentBPM--;
-            Timers.VdiTick.Interval = 60000 / currentBPM;
-            Timers.VdiTock.Interval = 60000 / currentBPM / 3;
+            currentBpm--;
+            Timers.VdiTick.Interval = 60000 / currentBpm;
+            Timers.VdiTock.Interval = 60000 / currentBpm / 3;
             Timers.VdiTick.Enabled = true;
             bpmInterval = CalculateBPMtoMS();
         }
 
-        private void ProcessTock(object sender, ElapsedEventArgs e)
+        // Event handler nullability
+        private void ProcessTock(object? sender, ElapsedEventArgs e)
         {
-            Dispatcher.Dispatch(new VBITock(meterBoxModeNumeric));
+            Dispatcher?.Dispatch(new VBITock(meterBoxModeNumeric));
             Timers.VdiTock.Enabled = false;
-            UpdateVbi(VBIState.Value.VBIStateNumber);
+            UpdateVbi(VbiState?.Value.VBIStateNumber ?? 0);
             this.StateHasChanged();
         }
 
@@ -360,15 +372,15 @@ namespace HSTempoWasm.Pages
             JSRuntime.InvokeVoidAsync("playBeat");
         }
 
-        private void ProcessTick(object sender, ElapsedEventArgs elapsedEventArgs)
+        // Event handler nullability
+        private void ProcessTick(object? sender, ElapsedEventArgs elapsedEventArgs)
         {
-            if (AudibleState.Value.Audible)
+            if (AudibleState?.Value.Audible == true)
             {
                 JSRuntime.InvokeVoidAsync("playBeat");
             }
-
-            Dispatcher.Dispatch(new VBITick(meterBoxModeNumeric));
-            UpdateVbi(VBIState.Value.VBIStateNumber);
+            Dispatcher?.Dispatch(new VBITick(meterBoxModeNumeric));
+            UpdateVbi(VbiState?.Value.VBIStateNumber ?? 0);
             this.StateHasChanged();
             Timers.VdiTock.Enabled = true;
         }
@@ -391,10 +403,10 @@ namespace HSTempoWasm.Pages
 
             Dispatcher.Dispatch(new ResetAudible());
             Dispatcher.Dispatch(new VBIResetAction());
-            UpdateVbi(VBIState.Value.VBIStateNumber);
+            UpdateVbi(VbiState.Value.VBIStateNumber);
 
             currentCount = 0;
-            averageMS = 0;
+            averageMs = 0;
             bpmInterval = 0;
             jitter = 0;
 
@@ -417,7 +429,7 @@ namespace HSTempoWasm.Pages
             Timers.BeatTimer.Enabled = true;
         }
 
-        private void ProcessSecond(object sender, ElapsedEventArgs elapsedEventArgs)
+        private void ProcessSecond(object? sender, ElapsedEventArgs elapsedEventArgs)
         {
             elapsedSecond++;
             StateHasChanged();
@@ -433,7 +445,7 @@ namespace HSTempoWasm.Pages
             }
 
             elapsedSecond = 0;
-            currentBPM = 0;
+            currentBpm = 0;
             recentTimeMs = 0;
         }
 
@@ -458,7 +470,7 @@ namespace HSTempoWasm.Pages
             };
 
             Dispatcher.Dispatch(new VBIResetAction());
-            UpdateVbi(VBIState.Value.VBIStateNumber);
+            UpdateVbi(VbiState.Value.VBIStateNumber);
             await Task.CompletedTask;
         }
     }
