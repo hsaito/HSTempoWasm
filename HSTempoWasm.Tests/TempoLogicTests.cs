@@ -22,11 +22,11 @@ namespace HSTempoWasm.Tests
         [Theory]
         [InlineData(-10, 0)]
         [InlineData(-0.1, 0)]
-        [InlineData(0.0001, 600000000)] // extremely small positive BPM
-        [InlineData(0.5, 120000)]
-        [InlineData(1, 60000)]
-        [InlineData(1000, 60)] // very high BPM
-        [InlineData(123.45, 486)] // fractional BPM
+        [InlineData(0.0001, 32767)] // extremely small positive BPM, clamped to short.MaxValue
+        [InlineData(0.5, 32767)]    // clamped to short.MaxValue
+        [InlineData(1, 32767)]      // clamped to short.MaxValue
+        [InlineData(1000, 60)]     // very high BPM
+        [InlineData(123.45, 486)]  // fractional BPM
         [InlineData(double.MaxValue, 0)] // extremely large BPM
         [InlineData(double.MinValue, 0)] // extremely small (negative) BPM
         public void CalculateBPMtoMS_HandlesEdgeCases(double bpm, short expectedMs)
