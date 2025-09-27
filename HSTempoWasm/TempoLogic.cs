@@ -6,8 +6,14 @@
     {
         public static short CalculateBPMtoMS(double bpm)
         {
-            return bpm <= 0 ? (short)0 : Convert.ToInt16(Math.Round(60000 / bpm));
+            if (bpm <= 0)
+                return 0;
+            var ms = Math.Round(60000 / bpm);
+            if (ms > short.MaxValue)
+                return short.MaxValue;
+            if (ms < short.MinValue)
+                return short.MinValue;
+            return Convert.ToInt16(ms);
         }
     }
 }
-
