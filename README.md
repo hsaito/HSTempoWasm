@@ -36,13 +36,26 @@ This repository uses a custom CodeQL analysis workflow. If you encounter issues,
 
 ### Error: "CodeQL analyses from advanced configurations cannot be processed when the default setup is enabled"
 
-You need to disable the default CodeQL setup in your repository settings:
+**CRITICAL:** This error means GitHub's default CodeQL setup is still enabled. You **MUST** disable it:
 
-1. Go to your repository on GitHub
-2. Navigate to **Settings** → **Code security and analysis**
-3. Find **CodeQL analysis** section
-4. If "Default setup" is enabled, click **Configure** → **Advanced**
-5. This will disable default setup and allow the custom workflow to run
+#### Step-by-Step Fix:
+1. **Go to**: https://github.com/hsaito/HSTempoWasm/settings/security_analysis
+2. **Find**: "Code scanning" section 
+3. **Look for**: "CodeQL analysis" (should show "Default setup: Active")
+4. **Click**: "Configure" button next to CodeQL analysis
+5. **Change**: From "Default" to "Advanced" 
+6. **Confirm**: The change (this disables default setup)
+7. **Re-run**: Your GitHub Actions workflow
+
+#### Verification:
+- After the change, the CodeQL section should show "Advanced setup: Active"
+- The custom workflow should then work without upload errors
+
+#### Alternative:
+If you can't change settings immediately, you can:
+- Rename `codeql-alternative.yml.disabled` to `codeql-alternative.yml`
+- Disable the main `codeql-analysis.yml` temporarily
+- Use manual trigger: Actions → CodeQL Analysis (Alternative) → Run workflow
 
 ### Error: "Resource not accessible by integration"
 

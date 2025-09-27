@@ -37,12 +37,19 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Debug GitHub Token Permissions
+    - name: Check CodeQL Configuration
       run: |
-        echo "GITHUB_TOKEN permissions check"
+        echo "=== CodeQL Configuration Check ==="
+        echo "Repository: ${{ github.repository }}"
         echo "Event: ${{ github.event_name }}"
         echo "Ref: ${{ github.ref }}"
-        echo "Repository: ${{ github.repository }}"
+        echo ""
+        echo "If you get 'CodeQL analyses from advanced configurations cannot be processed when the default setup is enabled':"
+        echo "1. Go to: https://github.com/${{ github.repository }}/settings/security_analysis"
+        echo "2. Find 'CodeQL analysis' and click 'Configure'"
+        echo "3. Change from 'Default' to 'Advanced'"
+        echo "4. Re-run this workflow"
+        echo ""
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
