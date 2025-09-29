@@ -1,0 +1,54 @@
+# Temporary CodeQL workflow - only enable this if main workflow fails
+# Rename this file to remove .disabled to activate it
+# Make sure to disable/delete the main codeql-analysis.yml when using this
+
+name: "CodeQL Analysis (Alternative)"
+
+on:
+  workflow_dispatch:  # Manual trigger only
+  schedule:
+    - cron: '0 6 * * 1'  # Monday at 6 AM
+
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    permissions:
+      security-events: write
+      packages: read
+      actions: read
+      contents: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ['csharp', 'javascript-typescript']
+        
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: ${{ matrix.language }}
+        build-mode: ${{ matrix.language == 'csharp' && 'autobuild' || 'none' }}
+
+    - if: matrix.language == 'csharp'
+      name: Autobuild
+      uses: github/codeql-action/autobuild@v3
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:${{ matrix.language }}"
+        output: sarif-results
+        upload-database: false
+
+    - name: Upload SARIF
+      uses: github/codeql-action/upload-sarif@v3
+      if: always()
+      with:
+        sarif_file: sarif-results/${{ matrix.language }}.sarif
+        category: "/language:${{ matrix.language }}"
