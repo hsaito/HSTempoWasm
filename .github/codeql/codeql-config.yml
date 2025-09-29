@@ -1,0 +1,26 @@
+# CodeQL configuration file (v2 compatible)
+# Documentation: https://docs.github.com/en/code-security/code-scanning/using-codeql-code-scanning-with-your-existing-ci-system/configuring-codeql
+
+name: "HSTempoWasm CodeQL Config"
+
+queries:
+  # Use the default security-and-quality query suites for each language.
+  - uses: security-and-quality
+
+paths:
+  - HSTempoWasm
+  - HSTempoWasm.Tests
+
+paths-ignore:
+  - '**/bin'
+  - '**/obj'
+  - '**/node_modules'
+  - '**/*.g.cs'
+  - '**/*.designer.cs'
+
+# Exclude specific queries if they produce known acceptable patterns (add as needed)
+# query-filters:
+#   - exclude:
+#       id: cs/some-problematic-query-id
+
+# Experimental options can be added here later if needed.
