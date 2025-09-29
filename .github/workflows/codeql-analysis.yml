@@ -1,52 +1,62 @@
-permissions:
-  contents: read
-name: "Code scanning - action"
+name: Code Scanning - CodeQL
 
 on:
+  push:
+    branches: [ master, main, develop ]
   pull_request:
+    branches: [ master, main, develop ]
   schedule:
     - cron: '0 20 * * 2'
 
-jobs:
-  CodeQL-Build:
+permissions:
+  contents: read
+  security-events: write
+  actions: read
 
+concurrency:
+  group: codeql-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
     runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'csharp', 'javascript' ]
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-      with:
-        # We must fetch at least the immediate parents so that if this is
-        # a pull request then we can checkout the head.
-        fetch-depth: 2
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-    # If this run was triggered by a pull request event, then checkout
-    # the head of the pull request instead of the merge commit.
-    - run: git checkout HEAD^2
-      if: ${{ github.event_name == 'pull_request' }}
-      
-    # Initializes the CodeQL tools for scanning.
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v1
-      # Override language selection by uncommenting this and choosing your languages
-      # with:
-      #   languages: go, javascript, csharp, python, cpp, java
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
 
-    # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
-    # If this step fails, then you should remove it and run the build manually (see below)
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v1
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: ${{ matrix.language }}
+          config-file: ./.github/codeql/codeql-config.yml
 
-    # ℹ️ Command-line programs to run using the OS shell.
-    # 📚 https://git.io/JvXDl
+      - name: Autobuild
+        if: matrix.language == 'csharp'
+        uses: github/codeql-action/autobuild@v2
 
-    # ✏️ If the Autobuild fails above, remove it and uncomment the following three lines
-    #    and modify them (or add more) to build your code if your project
-    #    uses a compiled language
+      # If autobuild fails for C#, replace above step with an explicit build:
+      # - name: Build (manual)
+      #   run: dotnet build HSTempoWasm/HSTempoWasm.csproj --configuration Release --no-restore
 
-    #- run: |
-    #   make bootstrap
-    #   make release
-
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v1
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+          category: /language:${{ matrix.language }}
