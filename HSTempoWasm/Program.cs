@@ -48,7 +48,14 @@ namespace HSTempoWasm
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            
+            // Use a trusted base address from the host environment
+            var trustedBaseAddress = builder.HostEnvironment.BaseAddress;
+            if (!Uri.TryCreate(trustedBaseAddress, UriKind.Absolute, out var baseUri))
+            {
+                throw new InvalidOperationException("Invalid base address");
+            }
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = baseUri });
             builder.Services.AddLogging(builder => builder
                 .SetMinimumLevel(LogLevel.Information)
             );
