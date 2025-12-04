@@ -4,7 +4,7 @@ This repository contains the source code for HSTempoWasm, a Blazor WebAssembly i
 
 ## Prerequisite
 
-- [.NET SDK 9.0.100](https://dotnet.microsoft.com/download/dotnet/9.0) or later supporting [Blazor](https://blazor.net)
+- [.NET SDK 10.0.100](https://dotnet.microsoft.com/download/dotnet/10.0) or later supporting [Blazor](https://blazor.net)
 
 ## Using HSTempoWasm
 
