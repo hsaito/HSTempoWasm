@@ -16,8 +16,9 @@
   <ItemGroup>
     <PackageReference Include="Fluxor.Blazor.Web" Version="6.9.0" />
     <PackageReference Include="Fluxor.Blazor.Web.ReduxDevTools" Version="6.9.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.1" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.13.2" />
   </ItemGroup>
   
   <ItemGroup>
@@ -32,8 +33,8 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="10.0.0" />
-    <PackageReference Include="Microsoft.NET.Sdk.WebAssembly.Pack" Version="10.0.0" />
+    <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="10.0.1" />
+    <PackageReference Include="Microsoft.NET.Sdk.WebAssembly.Pack" Version="10.0.1" />
     <Compile Update="i10n\Messages.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

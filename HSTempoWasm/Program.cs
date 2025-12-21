@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.FluentUI.AspNetCore.Components;
 using Fluxor;
 using Fluxor.Blazor.Web.ReduxDevTools;
 
@@ -59,6 +60,7 @@ namespace HSTempoWasm
             builder.Services.AddLogging(builder => builder
                 .SetMinimumLevel(LogLevel.Information)
             );
+            builder.Services.AddFluentUIComponents();
             var currentAssembly = typeof(Program).Assembly;
             builder.Services.AddFluxor(options => options.ScanAssemblies(currentAssembly).UseReduxDevTools(rdt => rdt.Name = "HSTempoWasm"));
             
