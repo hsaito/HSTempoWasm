@@ -1,18 +1,15 @@
 ﻿@inherits Microsoft.AspNetCore.Components.LayoutComponentBase
 
-<FluentGrid>
-    <FluentGridItem xs="12" sm="3" md="3" lg="3">
-        <NavMenu />
-    </FluentGridItem>
-    <FluentGridItem xs="12" sm="9" md="9" lg="9">
-        <div class="main">
-            <div class="top-row px-4">
-                <span>Powered by <FluentAnchor Href="http://blazor.net" Target="_blank">Blazor</FluentAnchor> and <FluentAnchor Href="https://webassembly.org/" Target="_blank">WebAssembly</FluentAnchor> (<FluentAnchor Href="https://github.com/hsaito/HSTempoWasm" Target="_blank">Code at GitHub</FluentAnchor>)</span>
-            </div>
+<div class="sidebar" xmlns="http://www.w3.org/1999/html">
+    <NavMenu />
+</div>
 
-            <div class="content px-4">
-                @Body
-            </div>
-        </div>
-    </FluentGridItem>
-</FluentGrid>
+<div class="main">
+    <div class="top-row px-4">
+        <span>Powered by <a href="http://blazor.net" target="_blank" class="ml-md-auto">Blazor</a> and <a href="https://webassembly.org/" target="_blank" class="ml-md-auto">WebAssembly</a> (<a href="https://github.com/hsaito/HSTempoWasm" target="_blank" class="ml-md-auto">Code at GitHub</a>)</span>
+    </div>
+
+    <div class="content px-4">
+        @Body
+    </div>
+</div>
