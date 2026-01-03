@@ -12,3 +12,5 @@ updates:
       interval: "daily"
     assignees:
       - "hsaito"
+    cooldown:
+      default-days: 7
