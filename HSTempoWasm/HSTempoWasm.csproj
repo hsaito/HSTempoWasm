@@ -33,7 +33,7 @@
   
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="10.0.2" />
-    <PackageReference Include="Microsoft.NET.Sdk.WebAssembly.Pack" Version="10.0.2" />
+    <PackageReference Include="Microsoft.NET.Sdk.WebAssembly.Pack" Version="10.0.3" />
     <Compile Update="i10n\Messages.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
